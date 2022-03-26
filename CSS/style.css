@@ -9,12 +9,273 @@ body
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
+    height: 100vh;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
 }
 body::after
 {
     content: '';
     position: absolute;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+/******************************************* CREATION CONTENT ************************************************/
+.demarrage_bouton
+{
+    position: absolute;
+    opacity: 1;
+    top: 35%;
+    border-radius:50%;
+    transition: all 0.3s;   
+}
+.demarrage_bouton img
+{
+    cursor: pointer;
+}
+.demarrage_bouton:hover
+{
+    box-shadow: 0 0 20px 3px white;
+}
+.demarrage_bouton_close
+{
+    opacity: 0;
+    position: absolute;
+    top: 35%;
+    border-radius:50%;
+    transition: all 2s;  
+}
+/********************************************* PREMIER DIV  ************************************************/
+.first_container_deroule
+{
+    background-color: white;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    transition: 0.3s ease-in-out;
+    transform: translateY(0%);
+}
+.first_container
+{
+    background-color: white;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    transition: 0.3s ease-in-out;
+    transform: translateY(-100%);
+}
+/********************************************* COLONNE ET NOTE ************************************************/
+.colonne,.note
+{
+    display: flex;
+    align-items: center;
+    border-left: 5px solid black;
+    border-radius: 0.3em;
+    padding: 0.4% 0;
+    margin: 0 1%;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+.colonne:hover,.note:hover
+{
+    border-left: 5px solid rgb(146, 146, 146);
+    color: white;
+    background-color: rgb(146, 146, 146);
+}
+.colonne i,.note i
+{
+    font-size: 0.8em;
+}
+.colonne i,.note i,
+.colonne p,.note p
+{
+    font-weight: bold;
+    margin: 0 0.5%;
+}
+.second_container
+{
+    height: 90%;
+    width: 98%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+/********************************************* SECOND DIV  ************************************************/
+.bloc
+{
+    height: 96%;
+    width: 18%;
+    text-align: center;
+    overflow: auto;
+    /* background: url('../mylogo.png'), linear-gradient(#DAE2F8,#D6A4A4); */
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.bloc input
+{
+    background-color: rgba(104, 104, 104, 0.445);
+    padding: 3%;
+    margin: 0.5%;
+    height: 6%;
+    width: 98%;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.5em;
+    border: none;
+}
+.myTask
+{
+    background: url('../myLogo.png') rgb(255, 255, 255);
+    border: 2px solid black;
+    color: black;
+    margin: 2% 0.5%;   
+    border-radius: 0.3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 7%;
+    cursor: pointer;
+    transition: all 1s ease;
+    box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
+}
+.gauche,.droite
+{
+    transition: all 1s ease;
+    cursor: pointer;
+    color: black;
+}
+.gauche:hover,.droite:hover
+{
+    cursor: pointer;
+    padding: 5%;
+}
+/*************************************** CREATION DU POP UP **********************************************/
+.pop_up
+{
+    content: '';
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+.container
+{
+    background-color: white;
+    width: 30%;
+    min-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/****************************************** ENTETE POP UP **********************************************/
+.entete
+{
+    background-color: rgba(0, 0, 0, 0.507);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2%;
+    color: white;
+    width: 100%;
+}
+.close
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 95%;
+}
+.close i
+{
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.close i:hover
+{
+    color: black;
+}
+.titre
+{
+    display: flex;
+    width: 95%;
+}
+/********************************************* CORPS DU POP UP **********************************************/
+.corps
+{
+    width: 95%;
+}
+/*************************************** PRESENTATION DU POP UP *****************************************/
+.presentation
+{
+    text-align: center;
+    margin: 4% 0;
+}
+/***************************************** TEXTAREA DU POP UP *****************************************/
+.textarea
+{
+    margin: 4% 0;
+}
+.textarea textarea
+{
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 20vh;
+    max-height: 20vh;
+    outline: none;
+}
+/**************************************** LES LABELS DU POP UP *****************************************/
+label
+{
+    font-weight: bold;
+}
+/**************************************** LES INPUTS DU POP UP *****************************************/
+.input
+{
+    margin: 4% 0;
+}
+.input input
+{
+    outline: none;
+    padding: 2%;
+    width: 100%;
+    cursor: pointer;
+}
+/****************************************** BOUTON DU POP UP *****************************************/
+.ajout
+{
+    margin: 4% 0;
+    text-align: center;
+    cursor: pointer;
+    background-color: #038f0a;
+    transition: all 0.3s ease-in-out;
+}
+.ajout button
+{
+    border: none;
+    background: none;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 2%;    
+    cursor: pointer;
+    color: white;
+}
+.ajout:hover
+{
+    background-color: #02aa0a;
+
 }
