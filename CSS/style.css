@@ -130,10 +130,11 @@ body::after
     cursor: pointer;
     font-size: 1.5em;
     border: none;
+    outline: none;
 }
 .bloc_son
 {
-    height: 93.7%;
+    height: 93%;
     position: relative;
 }
 .myTask
@@ -162,12 +163,12 @@ body::after
     cursor: pointer;
     padding: 5%;
 }
-.supprimer  
+/* .supprimer  
 {
     position: absolute;
     bottom: 2%;
     left: 45%;
-}
+} */
 .supprimer i 
 {
     font-size: 1.5em;
@@ -187,7 +188,7 @@ body::after
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,7 +203,7 @@ body::after
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -248,11 +249,27 @@ body::after
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    display: none;
+    transform: scale(0);
+    transition: 0.4s ease-in-out;
+}
+.pop_up_affiche
+{
+    content: '';
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+    transition: 0.4s ease-in-out;
 }
 .container
 {

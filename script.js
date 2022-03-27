@@ -60,43 +60,48 @@ second_container.setAttribute('class','second_container');
                      //  ETAPE 2 : CREATION D'UNE FONCTION DE CREATION DE COLONNE
 
 let i = 0;
+let j = 0;
 
-function rebuild() 
+function blocRebuild() 
 {
-    
+    const bloc = document.querySelectorAll('.bloc');
+    for (let index = 0; index < bloc.length; index++) 
+    {
+        bloc[index].setAttribute('id',`bloc${index}`);
+    }
 }
 
 function creationColonne()
-{
+{ 
         const bloc = document.createElement('div');
         bloc.setAttribute('class','bloc');
         bloc.setAttribute('id',`bloc${i}`);
             const input = document.createElement('input');
             input.setAttribute('type','text');
-            input.value = `Colonne ${i + 1}`;
+            input.value = `Colonne`;
             input.setAttribute('disabled','disabled');
             const bloc_son = document.createElement('div');
             bloc_son.setAttribute('class','bloc_son');
                 const supprimer_div = document.createElement('div');
                 supprimer_div.setAttribute('class',`supprimer`);
-                supprimer_div.setAttribute('id',`supprimer${i}`);
                 const supprimer_icone = document.createElement('i');
                 supprimer_icone.classList.add('fa','fa-trash');
                 supprimer_div.append(supprimer_icone);
             bloc_son.append(supprimer_div);
-        const colors = 
-        [
-            'linear-gradient(#DAE2F8,#D6A4A4)',
-            'linear-gradient(#F7F8F8,#ACBB78)',
-            'linear-gradient(#2980B9,#6DD5FA,#FFFFFF)',
-            'linear-gradient(#7F7FD5,#86A8E7,#91EAE4)',
-            'linear-gradient(#a8c0ff,#3f2b96)'
-        ];
-        bloc.style.backgroundImage = 'url("mylogo.png") ,' + colors[i];
+            const colors = 
+            [
+                'linear-gradient(#DAE2F8,#D6A4A4)',
+                'linear-gradient(#F7F8F8,#ACBB78)',
+                'linear-gradient(#2980B9,#6DD5FA,#FFFFFF)',
+                'linear-gradient(#7F7FD5,#86A8E7,#91EAE4)',
+                'linear-gradient(#a8c0ff,#3f2b96)'
+            ];
+        bloc.style.backgroundImage = 'url("mylogo.png") ,' + colors[j];
         bloc.append(input,bloc_son);   
         second_container.append(bloc);    
         body.append(second_container);
         i++;
+        j++;
 }
 
 function confirmation_suppression()
@@ -127,18 +132,27 @@ createurColonne.addEventListener('click', (e) =>
     {
         creationColonne();
         const bloc = document.querySelectorAll('.bloc');
+        const inputs = document.querySelectorAll('input');
         const suppression = document.querySelectorAll('.supprimer');
         for (let index = 0; index < suppression.length; index++) 
         {
             suppression[index].addEventListener('click',() => 
             {
                 confirmer_suppression.setAttribute('class','delete_pop_up_affiche');
-                confirmer_suppression.addEventListener('click',(e) => 
+                confirmer_suppression.addEventListener('click',() => 
                 {
                     bloc[index].remove();
                     confirmer_suppression.setAttribute('class','delete_pop_up');
-                    rebuild();
+                    blocRebuild();
+                    j = 0;  
                 })
+            })
+        }
+        for (let index = 0; index < inputs.length; index++) 
+        {
+            inputs[index].addEventListener('click',() => 
+            {
+                
             })
         }
     }
@@ -146,8 +160,144 @@ createurColonne.addEventListener('click', (e) =>
 
                                     //  CREATION DES NOTES
 
-const createurNote = document.querySelector('.note');
-// createurNote.addEventListener('click', () => 
-// {
+                     //  ETAPE 1 : CREATION D'UNE FONCTION DE CREATION DE NOTE
+function popUp()
+{
+    const pop_up = document.createElement('div');
+    pop_up.classList.add('pop_up_affiche','pop_up');
+        const container = document.createElement('div');
+        container.setAttribute('class','container');
+            const entete = document.createElement('div');
+            entete.setAttribute('class','entete');
+                const close = document.createElement('div');
+                close.setAttribute('class','close');
+                    const close_icone = document.createElement('i');
+                    close_icone.classList.add('fa','fa-close');
+                close.append(close_icone);
+                const titre = document.createElement('div');
+                titre.setAttribute('class','titre');
+                    const titre_child = document.createElement('h3');
+                    titre_child.innerText = 'NOUVELLE TACHE';
+                titre.append(titre_child);
+            entete.append(close,titre);
+            const corps = document.createElement('div');
+            corps.setAttribute('class','corps');
+                const presentation = document.createElement('div');
+                presentation.setAttribute('class','presentation');
+                    const presentation_para = document.createElement('p');
+                    presentation_para.innerText = 'Remplir les informations de la nouvelle tâche';
+                presentation.append(presentation_para);
+                const textarea_div = document.createElement('div');
+                textarea_div.setAttribute('class','textarea');
+                    const label_div = document.createElement('div');
+                    label_div.setAttribute('class','label');
+                        const label_text = document.createElement('label');
+                        label_text.innerText = 'Tache';
+                    label_div.append(label_text);
+                    const textarea_text = document.createElement('textarea');
+                textarea_div.append(label_div,textarea_text);
+                const date_input = document.createElement('div');
+                date_input.setAttribute('class','input');
+                    const date_input_label_div = document.createElement('div');
+                    date_input_label_div.setAttribute('class','label');
+                        const date_input_label_text = document.createElement('label');
+                        date_input_label_text.innerText = 'Date';
+                    date_input_label_div.append(date_input_label_text);
+                    const date_input_input_div = document.createElement('div');
+                    date_input_input_div.setAttribute('class','inputs');
+                        const date_input_input_text = document.createElement('input');
+                        date_input_input_text.setAttribute('type','date');
+                    date_input_input_div.append(date_input_input_text);
+                date_input.append(date_input_label_div,date_input_input_div);
+                const begin_time = document.createElement('div');
+                begin_time.setAttribute('class','input');
+                    const begin_time_label_div = document.createElement('div');
+                    begin_time_label_div.setAttribute('class','label');
+                        const begin_time_label_text = document.createElement('label');
+                        begin_time_label_text.innerText = 'Heure de début';
+                    begin_time_label_div.append(begin_time_label_text);
+                    const begin_time_input_div = document.createElement('div');
+                    begin_time_input_div.setAttribute('class','inputs');
+                        const begin_time_input_text = document.createElement('input');
+                        begin_time_input_text.setAttribute('type','time');
+                    begin_time_input_div.append(begin_time_input_text);
+                begin_time.append(begin_time_label_div,begin_time_input_div);
+                const end_time = document.createElement('div');
+                end_time.setAttribute('class','input');
+                    const end_time_label_div = document.createElement('div');
+                    end_time_label_div.setAttribute('class','label');
+                        const end_time_label_text = document.createElement('label');
+                        end_time_label_text.innerText = 'Heure de fin';
+                    end_time_label_div.append(end_time_label_text);
+                    const end_time_input_div = document.createElement('div');
+                    end_time_input_div.setAttribute('class','inputs');
+                        const end_time_input_text = document.createElement('input');
+                        end_time_input_text.setAttribute('type','time');
+                    end_time_input_div.append(end_time_input_text);
+                end_time.append(end_time_label_div,end_time_input_div);
+                const ajout = document.createElement('div');
+                ajout.setAttribute('class','ajout');
+                    const ajout_button = document.createElement('button');
+                    ajout_button.setAttribute('type','button');
+                    ajout_button.innerText = 'Ajouter';
+                ajout.append(ajout_button);
+            corps.append(presentation,textarea_div,date_input,begin_time,end_time,ajout);
+        container.append(entete,corps);
+    pop_up.append(container);
+body.append(pop_up);
+}
 
-// })
+const createurNote = document.querySelector('.note');
+
+createurNote.addEventListener('click', () => 
+{
+    popUp();
+    const pop_up = document.querySelector('.pop_up_affiche');
+    const ajout = document.querySelector('.ajout')
+    const ajout_button = ajout.querySelector('button');
+    ajout_button.addEventListener('click',(e) => 
+    {
+        if(second_container.children.length == 0)
+        {
+            e.preventDefault();
+        }
+        else
+        {
+            const parent = document.querySelectorAll('.bloc_son');
+            parent[0].prepend(myTask())
+        }
+    });
+                     //  ETAPE 2 : CREATION DU BOUTON DE SUPPRESSION DU FORMULAIRE
+
+    const fermer = document.querySelectorAll('.fa-close');
+    for (let index = 0; index < fermer.length; index++) 
+    {
+        fermer[index].addEventListener('click',() => 
+        {
+            pop_up.setAttribute('class','pop_up');
+        }) 
+    }
+})
+                     //  ETAPE 3 : CREATION D'UNE FONCTION DE CREATION DES TACHES
+function myTask()
+{
+    const myTask = document.createElement('div');
+    myTask.setAttribute('class','myTask');
+        const gauche = document.createElement('div');
+        gauche.setAttribute('class','gauche');
+            const gauche_icone = document.createElement('i');
+            gauche_icone.classList.add('fa','fa-angle-double-left');
+        gauche.append(gauche_icone);
+        const text_div = document.createElement('div');
+        text_div.setAttribute('class','text');
+            const text = document.createElement('span');
+            text.innerText = 'this is an example of task';
+        text_div.append(text);
+        const droite = document.createElement('div');
+        droite.setAttribute('class','droite');
+            const droite_icone = document.createElement('i');
+            droite_icone.classList.add('fa','fa-angle-double-right');
+        droite.append(droite_icone);
+    myTask.append(gauche,text,droite);
+    return myTask
+}
