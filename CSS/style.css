@@ -178,6 +178,67 @@ body::after
 {
     box-shadow: 0 0 20px 4px white;
 }
+/********************************* CREATION DU POP UP DE SUPPRESSION**********************************************/
+.delete_pop_up
+{
+    content: '';
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: 0.4s ease-in-out;
+}
+.delete_pop_up_affiche
+{
+    content: '';
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+    transition: 0.4s ease-in-out;
+}
+.confirm_delete
+{
+    width: 30%;
+    height: 30%;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 1.5em;
+    transition: 0.4s ease-in-out;
+    transform: translateY(0);
+}
+.confirm_delete button
+{
+    width: 25%;
+    padding: 4%;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 1.5em;
+    transition: all 0.3s ease-in-out;
+}
+.confirm_delete button:hover
+{
+    background-color: rgb(134, 134, 134);
+}
 /*************************************** CREATION DU POP UP **********************************************/
 .pop_up
 {

@@ -1,4 +1,5 @@
                                 // CREATION DU BOUTON DEMARREUR
+
 const body = document.querySelector('body');
     const demarrage = document.createElement('div');
     demarrage.setAttribute('class','demarrage_bouton')
@@ -6,10 +7,14 @@ const body = document.querySelector('body');
         logo_demarrage.setAttribute('src','mylogo.png');
     demarrage.appendChild(logo_demarrage);
 body.appendChild(demarrage);
+
                                     // CREATION DU GENERATEUR
+
 const first_container = document.createElement('div');
 first_container.setAttribute('class','first_container');
+
                             // CREATION DE LA PARTIE COLONNE DU GENERATEUR
+
     const colonne = document.createElement('div');
     colonne.setAttribute('class','colonne');
         const colonne_icone = document.createElement('i');
@@ -19,6 +24,7 @@ first_container.setAttribute('class','first_container');
     colonne.append(colonne_icone,colonne_para);
 
                             //  CREATION DE LA PARTIE NOTE DU GENERATEUR
+
     const note = document.createElement('div');
     note.setAttribute('class','note');
         const note_icone = document.createElement('i');
@@ -28,10 +34,12 @@ first_container.setAttribute('class','first_container');
     note.append(note_icone,note_para);
 
                         //  ATTRIBUTION DE LA COLONNE ET DE LA NOTE AU GENERATEUR
+
 first_container.append(colonne,note);
 body.append(first_container);
 
                                 //  BOUTON DE CREATION DU GENERATEUR
+
 const derouler = document.querySelector('.first_container');  
 const demarre = document.querySelector('.demarrage_bouton');                      
 demarrage.addEventListener('click',() => 
@@ -39,21 +47,27 @@ demarrage.addEventListener('click',() =>
     first_container.setAttribute('class','first_container_deroule');
     demarre.setAttribute('class','demarrage_bouton_close');
 })
+
                                     //  CREATION DES COLONNES
+
 const createurColonne = document.querySelector('.colonne');
+
                             //  ETAPE 1 : CREATION DU CONTENEUR DES COLONNES
+
 const second_container = document.createElement('div');
 second_container.setAttribute('class','second_container');
+
                      //  ETAPE 2 : CREATION D'UNE FONCTION DE CREATION DE COLONNE
+
 let i = 0;
+
+function rebuild() 
+{
+    
+}
+
 function creationColonne()
 {
-    if(i >= 5)
-    {
-        return
-    }
-    else
-    {
         const bloc = document.createElement('div');
         bloc.setAttribute('class','bloc');
         bloc.setAttribute('id',`bloc${i}`);
@@ -83,24 +97,55 @@ function creationColonne()
         second_container.append(bloc);    
         body.append(second_container);
         i++;
-    }
 }
 
-createurColonne.addEventListener('click', () => 
+function confirmation_suppression()
 {
-    creationColonne()
-    const bloc = document.querySelectorAll('.bloc');
-    const suppression = document.querySelectorAll('.supprimer');
-    for (let index = 0; index < suppression.length; index++) 
+    const delete_popUp = document.createElement('div');
+    delete_popUp.setAttribute('class','delete_pop_up');
+        const confirm_delete = document.createElement('div');
+        confirm_delete.setAttribute('class','confirm_delete');
+            const deleteTitle = document.createElement('h3');
+            deleteTitle.innerHTML = 'Voulez-vous supprimer cette colonne ?';
+            const deleteBouton = document.createElement('button');
+            deleteBouton.innerHTML = 'Supprimer';
+        confirm_delete.append(deleteTitle,deleteBouton);
+    delete_popUp.append(confirm_delete);
+    body.append(delete_popUp);
+}
+
+confirmation_suppression();
+const confirmer_suppression = document.querySelector('.delete_pop_up');
+
+createurColonne.addEventListener('click', (e) => 
+{
+    if(second_container.children.length >= 5)
     {
-        suppression[index].addEventListener('click',() => 
+        e.preventDefault();
+    }
+    else
+    {
+        creationColonne();
+        const bloc = document.querySelectorAll('.bloc');
+        const suppression = document.querySelectorAll('.supprimer');
+        for (let index = 0; index < suppression.length; index++) 
         {
-            bloc[index].remove();
-        })
+            suppression[index].addEventListener('click',() => 
+            {
+                confirmer_suppression.setAttribute('class','delete_pop_up_affiche');
+                confirmer_suppression.addEventListener('click',(e) => 
+                {
+                    bloc[index].remove();
+                    confirmer_suppression.setAttribute('class','delete_pop_up');
+                    rebuild();
+                })
+            })
+        }
     }
 })
 
                                     //  CREATION DES NOTES
+
 const createurNote = document.querySelector('.note');
 // createurNote.addEventListener('click', () => 
 // {
