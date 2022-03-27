@@ -115,7 +115,6 @@ body::after
     width: 18%;
     text-align: center;
     overflow: auto;
-    /* background: url('../mylogo.png'), linear-gradient(#DAE2F8,#D6A4A4); */
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
@@ -132,9 +131,14 @@ body::after
     font-size: 1.5em;
     border: none;
 }
+.bloc_son
+{
+    height: 93.7%;
+    position: relative;
+}
 .myTask
 {
-    background: url('../myLogo.png') rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     border: 2px solid black;
     color: black;
     margin: 2% 0.5%;   
@@ -157,6 +161,22 @@ body::after
 {
     cursor: pointer;
     padding: 5%;
+}
+.supprimer  
+{
+    position: absolute;
+    bottom: 2%;
+    left: 45%;
+}
+.supprimer i 
+{
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.supprimer i:hover
+{
+    box-shadow: 0 0 20px 4px white;
 }
 /*************************************** CREATION DU POP UP **********************************************/
 .pop_up

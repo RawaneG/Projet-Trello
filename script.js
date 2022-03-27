@@ -56,10 +56,20 @@ function creationColonne()
     {
         const bloc = document.createElement('div');
         bloc.setAttribute('class','bloc');
+        bloc.setAttribute('id',`bloc${i}`);
             const input = document.createElement('input');
             input.setAttribute('type','text');
             input.value = `Colonne ${i + 1}`;
             input.setAttribute('disabled','disabled');
+            const bloc_son = document.createElement('div');
+            bloc_son.setAttribute('class','bloc_son');
+                const supprimer_div = document.createElement('div');
+                supprimer_div.setAttribute('class',`supprimer`);
+                supprimer_div.setAttribute('id',`supprimer${i}`);
+                const supprimer_icone = document.createElement('i');
+                supprimer_icone.classList.add('fa','fa-trash');
+                supprimer_div.append(supprimer_icone);
+            bloc_son.append(supprimer_div);
         const colors = 
         [
             'linear-gradient(#DAE2F8,#D6A4A4)',
@@ -69,7 +79,7 @@ function creationColonne()
             'linear-gradient(#a8c0ff,#3f2b96)'
         ];
         bloc.style.backgroundImage = 'url("mylogo.png") ,' + colors[i];
-        bloc.append(input);   
+        bloc.append(input,bloc_son);   
         second_container.append(bloc);    
         body.append(second_container);
         i++;
@@ -79,7 +89,17 @@ function creationColonne()
 createurColonne.addEventListener('click', () => 
 {
     creationColonne()
+    const bloc = document.querySelectorAll('.bloc');
+    const suppression = document.querySelectorAll('.supprimer');
+    for (let index = 0; index < suppression.length; index++) 
+    {
+        suppression[index].addEventListener('click',() => 
+        {
+            bloc[index].remove();
+        })
+    }
 })
+
                                     //  CREATION DES NOTES
 const createurNote = document.querySelector('.note');
 // createurNote.addEventListener('click', () => 
