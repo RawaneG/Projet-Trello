@@ -65,9 +65,11 @@ let j = 0;
 function blocRebuild() 
 {
     const bloc = document.querySelectorAll('.bloc');
+    const input = document.querySelectorAll('input');
     for (let index = 0; index < bloc.length; index++) 
     {
         bloc[index].setAttribute('id',`bloc${index}`);
+        input[index].value = `Colonne ${index + 1}`;
     }
 }
 
@@ -78,16 +80,18 @@ function creationColonne()
         bloc.setAttribute('id',`bloc${i}`);
             const input = document.createElement('input');
             input.setAttribute('type','text');
-            input.value = `Colonne`;
+            input.value = `Colonne ${i + 1}`;
             input.setAttribute('disabled','disabled');
             const bloc_son = document.createElement('div');
             bloc_son.setAttribute('class','bloc_son');
+                const task = document.createElement('div');
+                task.setAttribute('class','task');
                 const supprimer_div = document.createElement('div');
                 supprimer_div.setAttribute('class',`supprimer`);
                 const supprimer_icone = document.createElement('i');
                 supprimer_icone.classList.add('fa','fa-trash');
                 supprimer_div.append(supprimer_icone);
-            bloc_son.append(supprimer_div);
+            bloc_son.append(task,supprimer_div);
             const colors = 
             [
                 'linear-gradient(#DAE2F8,#D6A4A4)',
@@ -112,15 +116,24 @@ function confirmation_suppression()
         confirm_delete.setAttribute('class','confirm_delete');
             const deleteTitle = document.createElement('h3');
             deleteTitle.innerHTML = 'Voulez-vous supprimer cette colonne ?';
-            const deleteBouton = document.createElement('button');
-            deleteBouton.innerHTML = 'Supprimer';
-        confirm_delete.append(deleteTitle,deleteBouton);
+            const deleteChoice = document.createElement('div');
+            deleteChoice.setAttribute('class','choice');
+                const deleteBouton = document.createElement('button');
+                deleteBouton.setAttribute('id','delete');
+                deleteBouton.innerText = 'Supprimer';
+                const annulerBouton = document.createElement('button');
+                annulerBouton.setAttribute('id','annuler');
+                annulerBouton.innerText = 'Annuler';
+            deleteChoice.append(deleteBouton,annulerBouton);
+        confirm_delete.append(deleteTitle,deleteChoice);
     delete_popUp.append(confirm_delete);
     body.append(delete_popUp);
 }
 
 confirmation_suppression();
 const confirmer_suppression = document.querySelector('.delete_pop_up');
+const button_delete = document.querySelector('#delete');
+const annuler = document.querySelector('#annuler');
 
 createurColonne.addEventListener('click', (e) => 
 {
@@ -131,6 +144,7 @@ createurColonne.addEventListener('click', (e) =>
     else
     {
         creationColonne();
+        blocRebuild();      
         const bloc = document.querySelectorAll('.bloc');
         const inputs = document.querySelectorAll('input');
         const suppression = document.querySelectorAll('.supprimer');
@@ -139,7 +153,7 @@ createurColonne.addEventListener('click', (e) =>
             suppression[index].addEventListener('click',() => 
             {
                 confirmer_suppression.setAttribute('class','delete_pop_up_affiche');
-                confirmer_suppression.addEventListener('click',() => 
+                button_delete.addEventListener('click',() => 
                 {
                     bloc[index].remove();
                     confirmer_suppression.setAttribute('class','delete_pop_up');
@@ -148,9 +162,10 @@ createurColonne.addEventListener('click', (e) =>
                 })
             })
         }
-        for (let index = 0; index < inputs.length; index++) 
+
+        for (let a = 0; a < inputs.length; a++) 
         {
-            inputs[index].addEventListener('click',() => 
+            inputs[a].addEventListener('click',() => 
             {
                 
             })
@@ -160,7 +175,7 @@ createurColonne.addEventListener('click', (e) =>
 
                                     //  CREATION DES NOTES
 
-                     //  ETAPE 1 : CREATION D'UNE FONCTION DE CREATION DE NOTE
+                     //  CREATION D'UNE FONCTION DE CREATION DE NOTE
 function popUp()
 {
     const pop_up = document.createElement('div');
@@ -217,7 +232,7 @@ function popUp()
                         begin_time_label_text.innerText = 'Heure de début';
                     begin_time_label_div.append(begin_time_label_text);
                     const begin_time_input_div = document.createElement('div');
-                    begin_time_input_div.setAttribute('class','inputs');
+                    begin_time_input_div.classList.add('inputs','start');
                         const begin_time_input_text = document.createElement('input');
                         begin_time_input_text.setAttribute('type','time');
                     begin_time_input_div.append(begin_time_input_text);
@@ -230,7 +245,7 @@ function popUp()
                         end_time_label_text.innerText = 'Heure de fin';
                     end_time_label_div.append(end_time_label_text);
                     const end_time_input_div = document.createElement('div');
-                    end_time_input_div.setAttribute('class','inputs');
+                    end_time_input_div.classList.add('inputs','end');
                         const end_time_input_text = document.createElement('input');
                         end_time_input_text.setAttribute('type','time');
                     end_time_input_div.append(end_time_input_text);
@@ -249,55 +264,159 @@ body.append(pop_up);
 
 const createurNote = document.querySelector('.note');
 
-createurNote.addEventListener('click', () => 
-{
-    popUp();
-    const pop_up = document.querySelector('.pop_up_affiche');
-    const ajout = document.querySelector('.ajout')
-    const ajout_button = ajout.querySelector('button');
-    ajout_button.addEventListener('click',(e) => 
-    {
-        if(second_container.children.length == 0)
-        {
-            e.preventDefault();
-        }
-        else
-        {
-            const parent = document.querySelectorAll('.bloc_son');
-            parent[0].prepend(myTask())
-        }
-    });
-                     //  ETAPE 2 : CREATION DU BOUTON DE SUPPRESSION DU FORMULAIRE
+                            // Evenement au moment ou l'on clique sur la colonne 'Note'
 
-    const fermer = document.querySelectorAll('.fa-close');
-    for (let index = 0; index < fermer.length; index++) 
+createurNote.addEventListener('click', (e) => 
+{
+    if(second_container.children.length == 0)
     {
-        fermer[index].addEventListener('click',() => 
+        e.preventDefault();
+    }
+    else
+    {
+        popUp();
+        const pop_up = document.querySelectorAll('.pop_up_affiche');
+        const ajout = pop_up[0].querySelector('.ajout');
+    
+                                // Evenement au moment ou l'on clique sur le bouton ajouter
+    
+        ajout.addEventListener('click',(e) => 
         {
-            pop_up.setAttribute('class','pop_up');
-        }) 
+                            //  Récupération des différentes valeurs du formulaire 
+    
+                for (let x = 0; x < pop_up.length; x++) 
+                {
+                                //  Récupération de la valeur du textarea
+    
+                    const parent = document.querySelectorAll('.bloc_son');
+                    const son = parent[0].querySelector('.task');
+                    const textarea = document.querySelectorAll('textarea');
+                    let textarea_value = '';
+                    for(let i = 0; i < textarea.length; i++)
+                    {
+                        textarea_value = 'Tâche : ' + textarea[i].value;
+                    }
+    
+                                //  Récupération de la valeur de la date
+    
+                    const date = document.querySelectorAll('input[type=date]');
+                    let date_value = '';
+                    for(let i = 0; i < date.length; i++)
+                    {
+                        date_value = 'Date : ' + date[i].value;
+                    }
+    
+                                //  Récupération de la valeur de l'heure de début
+    
+                    const heure_debut = document.querySelectorAll('.start');
+                    let begin_value = '';
+                    for(let i = 0; i < heure_debut.length; i++)
+                    {
+                    let begin_time = heure_debut[i].querySelectorAll('input[type=time]');
+                        for(let j = 0; j < begin_time.length; j++)
+                        {
+                            begin_value = 'Commence à : ' + begin_time[j].value;
+                        }
+                    }
+                                //  Récupération de la valeur de l'heure de fin
+    
+                    const heure_fin = document.querySelectorAll('.end');
+                    let end_value = '';
+                    for(let i = 0; i < heure_fin.length; i++)
+                    {
+                        let end_time = heure_fin[i].querySelectorAll('input[type=time]');
+                        for(let j = 0; j < end_time.length; j++)
+                        {
+                            end_value = 'Termine à : ' + end_time[j].value;
+                        }
+                    }   
+                                //  Affectation des différentes valeurs dans la div 'myTask'
+    
+                    son.prepend(myTask(textarea_value,date_value,begin_value,end_value))
+    
+                                            //  Fermeture automatique du Pop Up
+    
+                    pop_up[x].setAttribute('class','pop_up');
+                    
+                        //  Evenement de fermeture du Pop Up manuellement après ajout de tâches
+    
+                    const fermer = document.querySelectorAll('.fa-close');
+                    for (let y = 0; y < fermer.length; y++) 
+                    {
+                        fermer[y].addEventListener('click',() => 
+                        {
+                            pop_up[x].setAttribute('class','pop_up');
+                        }) 
+                    }
+    
+    
+                }
+        });
+    }
+
+                    //  Evenement de fermeture du Pop Up manuellement sans ajout de tâches
+
+    for (let x = 0; x < pop_up.length; x++) 
+    {
+        const fermer = document.querySelectorAll('.fa-close');
+        for (let y = 0; y < fermer.length; y++) 
+        {
+            fermer[y].addEventListener('click',() => 
+            {
+                pop_up[x].setAttribute('class','pop_up');
+            }) 
+        }
     }
 })
-                     //  ETAPE 3 : CREATION D'UNE FONCTION DE CREATION DES TACHES
-function myTask()
+
+let k = 0;
+
+function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
 {
     const myTask = document.createElement('div');
     myTask.setAttribute('class','myTask');
+    myTask.setAttribute('id',`myTask_${k}`);
+
         const gauche = document.createElement('div');
         gauche.setAttribute('class','gauche');
             const gauche_icone = document.createElement('i');
             gauche_icone.classList.add('fa','fa-angle-double-left');
+            gauche_icone.setAttribute('onclick',`move(${k},'left')`);
         gauche.append(gauche_icone);
         const text_div = document.createElement('div');
         text_div.setAttribute('class','text');
-            const text = document.createElement('span');
-            text.innerText = 'this is an example of task';
-        text_div.append(text);
+            const tache = document.createElement('h4');
+            tache.innerText= tachePara;
+            const date = document.createElement('h4');
+            date.innerText = datePara;
+            const heure_debut = document.createElement('h4');
+            heure_debut.innerText = heure_debutPara;
+            const heure_fin = document.createElement('h4');
+            heure_fin.innerText = heure_finPara;
+        text_div.append(tache,date,heure_debut,heure_fin);
         const droite = document.createElement('div');
         droite.setAttribute('class','droite');
             const droite_icone = document.createElement('i');
             droite_icone.classList.add('fa','fa-angle-double-right');
+            droite_icone.setAttribute('onclick', `move(${k},'right')`);
         droite.append(droite_icone);
-    myTask.append(gauche,text,droite);
+    myTask.append(gauche,text_div,droite);
+    k++;
     return myTask
+}
+
+function move(id,side)
+{
+    if(side == 'left')
+    {
+        let left = document.getElementById('myTask_' + id)
+        let thePrevious = left.parentElement.parentElement.parentElement.previousSibling.querySelector('.task');
+        thePrevious.append(left);
+    }
+    else
+    {
+        let right = document.getElementById('myTask_' + id)
+        let theNext = right.parentElement.parentElement.parentElement.nextSibling.querySelector('.task');
+        theNext.append(right);
+    }
 }
