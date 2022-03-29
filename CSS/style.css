@@ -119,6 +119,7 @@ body::after
     overflow: auto;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    animation: bounce 0.5s linear;
 }
 .bloc input
 {
@@ -184,6 +185,39 @@ body::after
 {
     box-shadow: 0 0 20px 4px white;
 }
+@keyframes bounce {
+    0%, 20%, 40%, 60%, 80% 
+    {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1);
+    } 
+    0% 
+    {
+        opacity: 0;
+        transform: scale3d(0.3,0.3,0.3);
+    } 
+    20% 
+    {
+        transform: scale3d(1.03,1.03,1.03);
+    } 
+    40% 
+    {
+        transform: scale3d(0.9,0.9,0.9);
+    } 
+    60% 
+    {
+        opacity: 1;
+        transform: scale3d(1.01,1.01,1.01);
+    } 
+    80% 
+    {
+        transform: scale3d(0.97,0.97,0.97);
+    } 
+    to  
+    {
+        opacity: 1;
+    }
+
+ } 
 /********************************* CREATION DU POP UP DE SUPPRESSION**********************************************/
 .delete_pop_up
 {

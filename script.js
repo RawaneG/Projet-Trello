@@ -68,7 +68,7 @@ function blocRebuild()
     const input = document.querySelectorAll('input');
     for (let index = 0; index < bloc.length; index++) 
     {
-        bloc[index].setAttribute('id',`bloc${index}`);
+        bloc[index].setAttribute('id',`${index}`);
         input[index].value = `Colonne ${index + 1}`;
     }
 }
@@ -77,7 +77,7 @@ function creationColonne()
 { 
         const bloc = document.createElement('div');
         bloc.setAttribute('class','bloc');
-        bloc.setAttribute('id',`bloc${i}`);
+        bloc.setAttribute('id',`${i}`);
             const input = document.createElement('input');
             input.setAttribute('type','text');
             input.value = `Colonne ${i + 1}`;
@@ -144,6 +144,7 @@ createurColonne.addEventListener('click', (e) =>
     else
     {
         creationColonne();
+        moving();
         blocRebuild();      
         const bloc = document.querySelectorAll('.bloc');
         const inputs = document.querySelectorAll('input');
@@ -156,6 +157,7 @@ createurColonne.addEventListener('click', (e) =>
                 button_delete.addEventListener('click',() => 
                 {
                     bloc[index].remove();
+                    moving();
                     confirmer_suppression.setAttribute('class','delete_pop_up');
                     blocRebuild();
                     j = 0;  
@@ -265,7 +267,6 @@ body.append(pop_up);
 const createurNote = document.querySelector('.note');
 
                             // Evenement au moment ou l'on clique sur la colonne 'Note'
-const pop_up = document.querySelectorAll('.pop_up_affiche');
 createurNote.addEventListener('click', (e) => 
 {
     if(second_container.children.length == 0)
@@ -280,7 +281,7 @@ createurNote.addEventListener('click', (e) =>
     
                                 // Evenement au moment ou l'on clique sur le bouton ajouter
     
-        ajout.addEventListener('click',(e) => 
+        ajout.addEventListener('click',() => 
         {
                             //  Récupération des différentes valeurs du formulaire 
     
@@ -333,11 +334,13 @@ createurNote.addEventListener('click', (e) =>
                                 //  Affectation des différentes valeurs dans la div 'myTask'
     
                     son.prepend(myTask(textarea_value,date_value,begin_value,end_value))
-    
+
+                    moving();
                                             //  Fermeture automatique du Pop Up
 
                     pop_up[x].setAttribute('class','pop_up');
-                    
+
+
                         //  Evenement de fermeture du Pop Up manuellement après ajout de tâches
     
                     const fermer = document.querySelectorAll('.fa-close');
@@ -352,9 +355,7 @@ createurNote.addEventListener('click', (e) =>
     
                 }
         });
-    }
-
-                    //  Evenement de fermeture du Pop Up manuellement sans ajout de tâches
+                            //  Evenement de fermeture du Pop Up manuellement sans ajout de tâches
 
     for (let x = 0; x < pop_up.length; x++) 
     {
@@ -366,6 +367,8 @@ createurNote.addEventListener('click', (e) =>
                 pop_up[x].setAttribute('class','pop_up');
             }) 
         }
+    }
+
     }
 })
 
@@ -381,7 +384,6 @@ function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
         gauche.setAttribute('class','gauche');
             const gauche_icone = document.createElement('i');
             gauche_icone.classList.add('fa','fa-angle-double-left');
-            gauche_icone.style.visibility = 'hidden';
             gauche_icone.setAttribute('onclick',`move(${k},'left')`);
         gauche.append(gauche_icone);
         const text_div = document.createElement('div');
@@ -410,15 +412,19 @@ function move(id,side)
 {
     if(side == 'left')
     {
-        let left = document.getElementById('myTask_' + id)
-        let thePrevious = left.parentElement.parentElement.parentElement.previousSibling.querySelector('.task');
-        thePrevious.append(left);
+        let left = document.getElementById(`myTask_${id}`);
+        let leftParent = left.parentElement.parentElement.parentElement.id;
+        let parentPrecedent = +(leftParent) - 1;
+        document.getElementById(parentPrecedent).querySelector('.task').appendChild(left)
+        moving();
     }
     else
     {
-        let right = document.getElementById('myTask_' + id)
-        let theNext = right.parentElement.parentElement.parentElement.nextSibling.querySelector('.task');
-        theNext.append(right);
+        let right = document.getElementById(`myTask_${id}`);
+        let rightParent = right.parentElement.parentElement.parentElement.id;
+        let parentSuivant = parseInt(rightParent) + 1;
+        document.getElementById(parentSuivant).querySelector('.task').appendChild(right)
+        moving();
     }
 }
 const trash_menu = document.querySelector('.trash_menu');
@@ -431,3 +437,43 @@ trash_icone.addEventListener('click',() =>
     trash.classList.toggle('trash_return');
     trash.classList.toggle('trash')
 })
+
+function moving()
+{
+    const bloc = document.querySelectorAll('.bloc');
+    for(let i = 0; i < bloc.length; i++)
+    {
+        if(bloc[i+1] == null)
+        {
+            const tacheDroite = bloc[i].querySelectorAll('.droite');
+            for(let j = 0; j < tacheDroite.length; j++)
+            {
+                tacheDroite[j].style.visibility = 'hidden'
+            }
+        }
+        else
+        {
+            const tacheDroite = bloc[i].querySelectorAll('.droite');
+            for(let j = 0; j < tacheDroite.length; j++)
+            {
+                tacheDroite[j].style.visibility = 'visible'
+            }
+        }
+        if(bloc[i-1] == null)
+        {
+            const tacheGauche = bloc[i].querySelectorAll('.gauche');
+            for(let j = 0; j < tacheGauche.length; j++)
+            {
+                tacheGauche[j].style.visibility = 'hidden'
+            }
+        }
+        else
+        {
+            const tacheGauche = bloc[i].querySelectorAll('.gauche');
+            for(let j = 0; j < tacheGauche.length; j++)
+            {
+                tacheGauche[j].style.visibility = 'visible'
+            }
+        }
+    }
+}
