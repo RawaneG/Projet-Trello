@@ -265,7 +265,7 @@ body.append(pop_up);
 const createurNote = document.querySelector('.note');
 
                             // Evenement au moment ou l'on clique sur la colonne 'Note'
-
+const pop_up = document.querySelectorAll('.pop_up_affiche');
 createurNote.addEventListener('click', (e) => 
 {
     if(second_container.children.length == 0)
@@ -335,7 +335,7 @@ createurNote.addEventListener('click', (e) =>
                     son.prepend(myTask(textarea_value,date_value,begin_value,end_value))
     
                                             //  Fermeture automatique du Pop Up
-    
+
                     pop_up[x].setAttribute('class','pop_up');
                     
                         //  Evenement de fermeture du Pop Up manuellement après ajout de tâches
@@ -381,6 +381,7 @@ function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
         gauche.setAttribute('class','gauche');
             const gauche_icone = document.createElement('i');
             gauche_icone.classList.add('fa','fa-angle-double-left');
+            gauche_icone.style.visibility = 'hidden';
             gauche_icone.setAttribute('onclick',`move(${k},'left')`);
         gauche.append(gauche_icone);
         const text_div = document.createElement('div');
@@ -420,3 +421,13 @@ function move(id,side)
         theNext.append(right);
     }
 }
+const trash_menu = document.querySelector('.trash_menu');
+const trash = document.querySelector('.trash');
+const trash_icone = trash.querySelector('i');
+trash_icone.addEventListener('click',() => 
+{
+    trash_menu.classList.toggle('trash_menu');
+    trash_menu.classList.toggle('trash_menu_open');
+    trash.classList.toggle('trash_return');
+    trash.classList.toggle('trash')
+})
