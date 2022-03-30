@@ -14,6 +14,7 @@ body
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+    font-family: sans-serif;
 }
 body::after
 {
@@ -112,6 +113,27 @@ body::after
     z-index: 0;
 }
 /********************************************* SECOND DIV  ************************************************/
+/* .myDescription_affiche
+{
+    background: rgb(255, 255, 255);
+    color: black;
+    border-radius: 0.3em;
+    height: 100%;
+    padding: 3%;
+    transition: 0.5s ease-in-out;
+    transform: scale(1);
+    box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
+} 
+.myDescription
+{
+    background: rgb(255, 255, 255);
+    color: black;
+    border-radius: 0.3em;
+    padding: 3%;
+    transition: 0.5s ease-in-out;
+    transform: scale(0);
+    box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
+}  */
 .bloc
 {
     height: 96%;
@@ -122,17 +144,28 @@ body::after
     background-position: 50% 50%;
     animation: bounce 0.5s linear;
 }
-.bloc input
+.myInpute
+{
+    background-color: rgba(214, 211, 211, 0.445);
+    padding: 3%;
+    height: 6%;
+    width: 98%;
+    color: black;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.5em;
+    border: none;
+}
+.myInputs
 {
     background-color: rgba(104, 104, 104, 0.445);
     padding: 3%;
-    margin: 0.5%;
     height: 6%;
-    width: 98%;
+    width: 100%;
     color: white;
     text-align: center;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.5em;
     border: none;
     outline: none;
 }
@@ -148,14 +181,17 @@ body::after
 {
     width: 100%;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .myTask
 {
+    position: relative;
     background: rgb(255, 255, 255);
     color: black;
     margin: 2% 0.5%;   
     border-radius: 0.3em;
-    padding: 3%;
+    padding: 10%;
     min-width: 100%;
     display: flex;
     justify-content: space-between;
@@ -421,7 +457,6 @@ label
 .ajout:hover
 {
     background-color: #02aa0a;
-
 }
 /****************************************** MENU CORBEILLE ***********************************************/
 .trash_menu

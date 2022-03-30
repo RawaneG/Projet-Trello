@@ -53,7 +53,7 @@ function blocRebuild()
     for (let index = 0; index < bloc.length; index++) 
     {
         bloc[index].setAttribute('id',`${index}`);
-        input[index].value = `Colonne ${index + 1}`;
+        input[index].innerText = `Colonne ${index + 1}`;
     }
 }
 function creationColonne()
@@ -61,11 +61,10 @@ function creationColonne()
         const bloc = document.createElement('div');
         bloc.setAttribute('class','bloc');
         bloc.setAttribute('id',`${i}`);
-            const input = document.createElement('input');
+            const input = document.createElement('div');
             input.setAttribute('type','text');
-            input.value = `Colonne ${i + 1}`;
+            input.innerText = `Colonne ${i + 1}`;
             input.setAttribute('class','myInputs');
-            input.setAttribute('disabled','disabled');
             const bloc_son = document.createElement('div');
             bloc_son.setAttribute('class','bloc_son');
                 const task = document.createElement('div');
@@ -104,14 +103,26 @@ createurColonne.addEventListener('click', (e) =>
         creationColonne();
         notifier('Colonne créee avec succès');
         moving();
-    }
+        const myTitle = document.querySelectorAll('.myInputs');
+        for(let i = 0; i < myTitle.length; i++)
+        {
+            myTitle[i].addEventListener('dblclick',() => 
+            {                
+                let input = document.createElement('input');
+                input.setAttribute('class','myInpute');
+                input.value = myTitle[i].innerText;
+                myTitle[i].replaceWith(input);
+                blocRebuild();
+            })
+        }
+    }   
 })
 
-function myValues(element,variable,texte)
+function myValues(element,variable)
 {
     for(let i = 0; i < element.length; i++)
     {
-        variable = texte + element[i].value;
+        variable = element[i].value;
     }
     return variable;
 }
@@ -125,6 +136,7 @@ createurNote.addEventListener('click', (e) =>
     if(second_container.children.length == 0)
     {
         e.preventDefault();
+        notifier('Veuillez d\'abord créer une colonne');
     }
     else
     {
@@ -155,29 +167,41 @@ const task = document.querySelector('.task');
     //  Récupération de la valeur du textarea
     const textarea = document.querySelectorAll('textarea');
     let textarea_value = '';
-    textarea_value = myValues(textarea,textarea_value,'Tâche : ');
+    textarea_value = myValues(textarea,textarea_value);
     //  Récupération de la valeur de la date
     const date = document.querySelectorAll('input[type=date]');
     let date_value = '';
-    date_value = myValues(date,date_value,'Date : ');
+    date_value = myValues(date,date_value);
     //  Récupération de la valeur de l'heure de début
     const begin = document.querySelectorAll('.begintime');
     let begin_value = '';
-    begin_value = myValues(begin,begin_value,'Commence à : ');
+    begin_value = myValues(begin,begin_value);
     //  Récupération de la valeur de l'heure de fin
     const end = document.querySelectorAll('.endtime');
     let end_value = '';
-    end_value = myValues(end,end_value,'Termine à : ');
-    if( textarea_value === 'Tâche : '
-     && date_value === 'Date : ' 
-     && begin_value === 'Commence à : ' 
-     && end_value === 'Termine à : ')
+    end_value = myValues(end,end_value);
+
+    if( textarea_value === ''
+    && date_value === '' 
+    && begin_value === '' 
+    && end_value === '')
     {
         e.preventDefault();
+        notifier('Veuillez d\'abord remplir tous les champs');
     }
+    else if(new Date(date_value) < new Date())
+    {
+        notifier('Aucune date antérieure à la date d\'aujourd\'hui n\'est tolérée');
+    }
+    // else if(new Date(date_value) == new Date() || )
+    // {
+
+    // }
     else
     {
         task.prepend(myTask(textarea_value));
+        notifier('tâche créee avec succès');
+        moving();   
         clean();
         popUp.setAttribute('class','pop_up');
     }
@@ -194,6 +218,7 @@ function supprimer_colonne(id)
     if(id == 0 && second_container.children.length > 1)
     {
         pop_suppression.setAttribute('class','delete_pop_up'); 
+        notifier('Veuillez d\'abord supprimer toutes les colonnes');
     }
     else
     {
@@ -204,6 +229,7 @@ function supprimer_colonne(id)
                 supprimer.parentElement.parentElement.remove();
                 pop_suppression.setAttribute('class','delete_pop_up');
                 moving();
+                notifier('colonne supprimée avec succès');
                 blocRebuild();
                 j = 0;
             }
@@ -325,5 +351,5 @@ function notifier(message)
     setTimeout(() => 
     {
         notification.setAttribute('class','notification');
-    }, 1000)
+    }, 3000)
 }
