@@ -84,6 +84,7 @@ body::after
     margin: 0 1%;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    width: 95%;
 }
 .colonne:hover,.note:hover
 {
@@ -161,7 +162,7 @@ body::after
     align-items: center;
     min-height: 7%;
     cursor: pointer;
-    transition: all 1s ease;
+    animation: bounce 0.5s linear;    
     box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
 }
 .gauche,.droite
@@ -454,7 +455,7 @@ label
 .trash
 {
     font-size: 2em;
-    color: rgba(128, 128, 128, 0.5);
+    color: rgba(80, 79, 79, 0.5);
     width: 99%;
     cursor: pointer;
     transition: all 0.5s ease-in-out;
@@ -462,7 +463,7 @@ label
 .trash_return
 {
     font-size: 2em;
-    color: rgba(128, 128, 128, 0.5);
+    color: rgba(80, 79, 79, 0.5);
     transition: all 0.5s ease-in-out;
     width: 10%;
     cursor: pointer;

@@ -13,8 +13,74 @@
         <div class="trash">
             <i class="fa fa-trash"></i>
         </div>
-        <div class="corbeille">
-            
+        <div class="corbeille"></div>
+    </div>
+    <!------------------------------------ POP UP DE SUPPRESSION -------------------------------------->
+    <div class="delete_pop_up">
+        <div class="confirm_delete">
+            <h3>Voulez-vous supprimer cette colonne ?</h3>
+            <div class="choice">
+                <button id="delete">Supprimer</button>
+                <button id="annuler">Annuler</button>
+            </div>
+        </div>
+    </div>
+    <!--------------------------------------------- POP UP -------------------------------------->
+
+    <div class="pop_up">
+        <div class="container">
+    <!------------------------------------------ ENTETE POP UP -------------------------------------->
+            <div class="entete">
+                <div class="close">
+                    <i class="fa fa-close"></i>
+                </div>
+                <div class="titre">
+                    <h3>NOUVELLE TACHE</h3>
+                </div>
+            </div>
+    <!------------------------------------------ CORPS POP UP -------------------------------------->
+            <div class="corps">
+    <!------------------------------------- PRESENTATION DU POP UP -------------------------------------->
+                <div class="presentation">
+                    <p>Remplir les informations de la nouvelle tâche</p>
+                </div>
+    <!---------------------------------------- TEXTAREA DU POP UP -------------------------------------->
+                <div class="textarea">
+                    <div class="label">
+                        <label>Tache</label>
+                    </div>
+                    <textarea></textarea>
+                </div>
+    <!------------------------------------------ INPUTS DU POP UP -------------------------------------->
+                   <div class="input">
+                    <div class="label">
+                        <label>Date</label>
+                    </div>
+                    <div class="inputs">
+                        <input type="date">
+                    </div>
+                </div>
+                <div class="input">
+                    <div class="label">
+                        <label>Heure de début</label>
+                    </div>
+                    <div class="inputs">
+                        <input type="time" class="begintime">
+                    </div>
+                </div>
+                <div class="input">
+                    <div class="label">
+                        <label>Heure de fin</label>
+                    </div>
+                    <div class="inputs">
+                        <input type="time" class="endtime">
+                    </div>
+                </div>
+    <!------------------------------------------ BOUTON DU POP UP -------------------------------------->
+                <div class="ajout">
+                    <button type="button">Ajouter</button>
+                </div>  
+            </div>
         </div>
     </div>
 <script src="script.js"></script>
