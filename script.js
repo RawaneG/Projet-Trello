@@ -147,7 +147,7 @@ function clean()
         clean_textarea[i].value = '';
     }
 }
-ajouter.addEventListener('click',() => 
+ajouter.addEventListener('click',(e) => 
 {
 const task = document.querySelector('.task');
     //  Récupération de la valeur du textarea
@@ -166,9 +166,19 @@ const task = document.querySelector('.task');
     const end = document.querySelectorAll('.endtime');
     let end_value = '';
     end_value = myValues(end,end_value,'Termine à : ');
-    task.prepend(myTask(textarea_value));
-    clean();
-    popUp.setAttribute('class','pop_up');
+    if( textarea_value === 'Tâche : '
+     && date_value === 'Date : ' 
+     && begin_value === 'Commence à : ' 
+     && end_value === 'Termine à : ')
+    {
+        e.preventDefault();
+    }
+    else
+    {
+        task.prepend(myTask(textarea_value));
+        clean();
+        popUp.setAttribute('class','pop_up');
+    }
 })
 function supprimer_colonne(id)
 {
@@ -178,17 +188,24 @@ function supprimer_colonne(id)
     const annuler = document.querySelector('#annuler');
     const colonne = document.getElementById(id);
     let confirm = true;
-    confirmer.addEventListener('click',() => 
+    if(id == 0 && second_container.children.length > 1)
     {
-        if(confirm)
+        pop_suppression.setAttribute('class','delete_pop_up');
+    }
+    else
+    {
+        confirmer.addEventListener('click',() => 
         {
-            console.log(colonne);
-            colonne.remove();
-            pop_suppression.setAttribute('class','delete_pop_up');
-            moving();
-            blocRebuild();
-        }
-    })
+            if(confirm)
+            {
+                console.log(colonne);
+                colonne.remove();
+                pop_suppression.setAttribute('class','delete_pop_up');
+                moving();
+                blocRebuild();
+            }
+        })
+    }
     annuler.addEventListener('click',() => 
     {
         confirm = false;
