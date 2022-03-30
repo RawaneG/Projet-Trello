@@ -72,6 +72,7 @@ function creationColonne()
                 task.setAttribute('class','task');
                 const supprimer_div = document.createElement('div');
                 supprimer_div.setAttribute('class',`supprimer`);
+                supprimer_div.setAttribute('id',`supprimer${i}`);
                 supprimer_div.setAttribute('onclick',`supprimer_colonne(${i})`);
                 const supprimer_icone = document.createElement('i');
                 supprimer_icone.classList.add('fa','fa-trash');
@@ -101,6 +102,7 @@ createurColonne.addEventListener('click', (e) =>
     else
     {
         creationColonne();
+        notifier('Colonne créee avec succès');
         moving();
     }
 })
@@ -180,17 +182,18 @@ const task = document.querySelector('.task');
         popUp.setAttribute('class','pop_up');
     }
 })
+
 function supprimer_colonne(id)
 {
     const pop_suppression = document.querySelector('.delete_pop_up');
     pop_suppression.setAttribute('class','delete_pop_up_affiche');
     const confirmer = document.querySelector('#delete');
     const annuler = document.querySelector('#annuler');
-    const colonne = document.getElementById(id);
+    const supprimer = document.getElementById(`supprimer${id}`);
     let confirm = true;
     if(id == 0 && second_container.children.length > 1)
     {
-        pop_suppression.setAttribute('class','delete_pop_up');
+        pop_suppression.setAttribute('class','delete_pop_up'); 
     }
     else
     {
@@ -198,11 +201,11 @@ function supprimer_colonne(id)
         {
             if(confirm)
             {
-                console.log(colonne);
-                colonne.remove();
+                supprimer.parentElement.parentElement.remove();
                 pop_suppression.setAttribute('class','delete_pop_up');
                 moving();
                 blocRebuild();
+                j = 0;
             }
         })
     }
@@ -312,4 +315,15 @@ function moving()
             }
         }
     }
+}
+const notification = document.querySelector('.notification');
+const notifPara = notification.querySelector('h3');
+function notifier(message)
+{
+    notifPara.innerText = message;
+    notification.setAttribute('class','notification_affiche');
+    setTimeout(() => 
+    {
+        notification.setAttribute('class','notification');
+    }, 1000)
 }

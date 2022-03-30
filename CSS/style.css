@@ -482,3 +482,39 @@ label
     padding: 5%;
     border-bottom: 2px solid white;
 }
+/****************************************** NOTIFICATION ***********************************************/
+.notification
+{
+    background-color: rgb(108, 108, 243);
+    position: absolute;
+    width: 40%;
+    height: 10%;
+    right: 0;
+    bottom: 0;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s, 0.6s ease-in-out;
+    transform:translateY(100%);
+    z-index: 10;
+}
+.notification_affiche
+{
+    background-color: rgb(108, 108, 243);
+    position: absolute;
+    width: 40%;
+    height: 10%;
+    right: 0;
+    bottom: 0;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.6s ease-in-out;
+    animation: bounce 0.5s linear;    
+    transform: translateY(0%);
+    z-index: 10;
+}
