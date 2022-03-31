@@ -92,6 +92,7 @@ function creationColonne()
         i++;
         j++;
 }
+
 createurColonne.addEventListener('click', (e) => 
 {
     if(second_container.children.length >= 5)
@@ -103,6 +104,7 @@ createurColonne.addEventListener('click', (e) =>
         creationColonne();
         notifier('Colonne créee avec succès');
         moving();
+        blocRebuild();
         const myTitle = document.querySelectorAll('.myInputs');
         for(let i = 0; i < myTitle.length; i++)
         {
@@ -203,15 +205,50 @@ const task = document.querySelector('.task');
     }
     else
     {
-        // console.log(Date.parse(date_value + ' ' + begin_value) > Date.parse(date_value + ' ' + end_value));
-        task.prepend(myTask(textarea_value));
+        task.prepend(myTask(textarea_value,date_value,begin_value,end_value));
         notifier('tâche créee avec succès');
         moving();   
         clean();
         popUp.setAttribute('class','pop_up');
+        const my_tache = document.querySelectorAll('.icone_content');
+        for(let i = 0; i < my_tache.length; i++)
+        {
+            my_tache[i].addEventListener('mouseover',() => 
+            {
+                my_tache[i].nextSibling.setAttribute('class','myDescription_affiche');
+            })
+            my_tache[i].addEventListener('mouseout',() => 
+            {
+                my_tache[i].nextSibling.setAttribute('class','myDescription');
+            })
+        }
     }
 })
-
+function delete_myTask(id)
+{
+    const my_task_toDelete = document.getElementById(`delete_task${id}`);
+    const corbeille = document.querySelector('.corbeille');
+    let grandpa_corbeille = my_task_toDelete.parentElement.parentElement;
+    grandpa_corbeille.firstChild.remove();
+    corbeille.append(grandpa_corbeille);
+    notifier('Tâche supprimée avec succès');
+    const myTask = document.querySelectorAll('.icone_content');
+    for(let i = 0; i < myTask.length; i++)
+    {
+        myTask[i].addEventListener('mouseover',() => 
+        {
+            myTask[i].nextSibling.setAttribute('class','myDescription_affiche');
+        })
+        myTask[i].addEventListener('mouseout',() => 
+        {
+            myTask[i].nextSibling.setAttribute('class','myDescription');
+        })
+    }
+}
+function edit_myTask()
+{
+    
+}
 function supprimer_colonne(id)
 {
     const pop_suppression = document.querySelector('.delete_pop_up');
@@ -266,37 +303,58 @@ function move(id,side)
     }
 }
 
-function myTask(tachePara,datePara='',heure_debutPara='',heure_finPara='')
+function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
 {
     const myTask = document.createElement('div');
     myTask.setAttribute('class','myTask');
     myTask.setAttribute('id',`myTask_${k}`);
-        const gauche = document.createElement('div');
-        gauche.setAttribute('class','gauche');
-            const gauche_icone = document.createElement('i');
-            gauche_icone.classList.add('fa','fa-angle-double-left');
-            gauche_icone.setAttribute('onclick',`move(${k},'left')`);
-        gauche.append(gauche_icone);
-        const text_div = document.createElement('div');
-        text_div.setAttribute('class','text');
-            const tache = document.createElement('h4');
-            tache.innerText= tachePara;
-            const date = document.createElement('h4');
-            date.innerText = datePara;
-            const heure_debut = document.createElement('h4');
-            heure_debut.innerText = heure_debutPara;
-            const heure_fin = document.createElement('h4');
-            heure_fin.innerText = heure_finPara;
-        text_div.append(tache,date,heure_debut,heure_fin);
-        const droite = document.createElement('div');
-        droite.setAttribute('class','droite');
-            const droite_icone = document.createElement('i');
-            droite_icone.classList.add('fa','fa-angle-double-right');
-            droite_icone.setAttribute('onclick', `move(${k},'right')`);
-        droite.append(droite_icone);
-    myTask.append(gauche,text_div,droite);
+        const icones_content = document.createElement('div');
+        icones_content.setAttribute('class','icone_content');
+        const action = document.createElement('div');
+        action.setAttribute('class','action');
+            const icone_delete = document.createElement('i');
+            icone_delete.classList.add('fa','fa-trash');
+            icone_delete.setAttribute('id',`delete_task${k}`)
+            icone_delete.setAttribute('onclick',`delete_myTask(${k})`)
+            const icone_edit = document.createElement('i');
+            icone_edit.classList.add('fa','fa-edit');
+            icone_edit.setAttribute('id',`edit_task${k}`)
+            icone_edit.setAttribute('onclick',`edit_myTask(${k})`)
+        action.append(icone_edit,icone_delete);
+            const gauche = document.createElement('div');
+            gauche.setAttribute('class','gauche');
+                const gauche_icone = document.createElement('i');
+                gauche_icone.classList.add('fa','fa-angle-double-left');
+                gauche_icone.setAttribute('onclick',`move(${k},'left')`);
+            gauche.append(gauche_icone);
+            const text_div = document.createElement('div');
+            text_div.setAttribute('class','text');
+                const tache = document.createElement('h4');
+                tache.innerText= tachePara;
+            text_div.append(tache);
+            const droite = document.createElement('div');
+            droite.setAttribute('class','droite');
+                const droite_icone = document.createElement('i');
+                droite_icone.classList.add('fa','fa-angle-double-right');
+                droite_icone.setAttribute('onclick', `move(${k},'right')`);
+            droite.append(droite_icone);
+        icones_content.append(gauche,text_div,droite);
+    myTask.append(action,icones_content,myDescription(datePara,heure_debutPara,heure_finPara));
     k++;
     return myTask
+}
+function myDescription(datePara,heure_debutPara,heure_finPara)
+{
+    const myDescription = document.createElement('div');
+    myDescription.setAttribute('class','myDescription');
+    const date = document.createElement('h4');
+    date.innerText = datePara;
+    const heure_debut = document.createElement('h4');
+    heure_debut.innerText = heure_debutPara;
+    const heure_fin = document.createElement('h4');
+    heure_fin.innerText = heure_finPara;
+    myDescription.append(date,heure_debut,heure_fin);
+    return myDescription;
 }
 const trash_menu = document.querySelector('.trash_menu');
 const trash = document.querySelector('.trash');
