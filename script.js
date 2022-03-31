@@ -181,24 +181,29 @@ const task = document.querySelector('.task');
     let end_value = '';
     end_value = myValues(end,end_value);
 
+    let date_actuel = new Date().getTime();
+    let date_de_debut = Date.parse(date_value + ' ' + begin_value);
+    let date_de_fin = Date.parse(date_value + ' ' + end_value);
+
     if( textarea_value === ''
-    && date_value === '' 
-    && begin_value === '' 
-    && end_value === '')
+    || date_value === '' 
+    || begin_value === '' 
+    || end_value === '')
     {
         e.preventDefault();
         notifier('Veuillez d\'abord remplir tous les champs');
     }
-    else if(new Date(date_value) < new Date())
+    else if(date_de_debut < date_actuel)
     {
-        notifier('Aucune date antérieure à la date d\'aujourd\'hui n\'est tolérée');
+        notifier('Aucune date antérieure à celle d\'aujourd\'hui n\'est acceptée');
     }
-    // else if(new Date(date_value) == new Date() || )
-    // {
-
-    // }
+    else if(date_de_debut >= date_actuel && date_de_fin <=  date_de_debut)
+    {
+        notifier('L\'heure de début doit être supérieur à l\'heure de fin');
+    }
     else
     {
+        // console.log(Date.parse(date_value + ' ' + begin_value) > Date.parse(date_value + ' ' + end_value));
         task.prepend(myTask(textarea_value));
         notifier('tâche créee avec succès');
         moving();   
@@ -261,7 +266,7 @@ function move(id,side)
     }
 }
 
-function myTask(tachePara,datePara = '',heure_debutPara='',heure_finPara='')
+function myTask(tachePara,datePara='',heure_debutPara='',heure_finPara='')
 {
     const myTask = document.createElement('div');
     myTask.setAttribute('class','myTask');
