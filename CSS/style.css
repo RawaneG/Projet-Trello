@@ -52,7 +52,7 @@ body::after
 .first_container_deroule,.first_container
 {
     background-color: white;
-    height: 10%;
+    height: 15%;
     width: 100%;
     display: flex;
     flex-direction: column;

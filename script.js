@@ -25,8 +25,16 @@ first_container.setAttribute('class','first_container');
         const note_para = document.createElement('p');
         note_para.innerHTML = 'Note';
     note.append(note_icone,note_para);
+                            //  CREATION DE LA PARTIE NOTE DU GENERATEUR
+    const save = document.createElement('div');
+    save.setAttribute('class','note');
+        const save_icone = document.createElement('i');
+        save_icone.classList.add('fa','fa-plus');
+        const save_para = document.createElement('p');
+        save_para.innerHTML = 'Sauvegarder Etat';
+    save.append(save_icone,save_para);
                         //  ATTRIBUTION DE LA COLONNE ET DE LA NOTE AU GENERATEUR
-first_container.append(colonne,note);
+first_container.append(colonne,note,save);
 body.append(first_container);
                                 //  BOUTON DE CREATION DU GENERATEUR
 
@@ -205,26 +213,26 @@ const task = document.querySelector('.task');
     else
     {   
         task.prepend(myTask(textarea_value,date_value,begin_value,end_value));
-            // let intervalle1 = date_de_debut - date_actuel;
-            // let intervalle2 = date_de_fin - date_actuel;
-            // let time = setInterval(() =>  
-            // {
-            //     intervalle1 -= 1000;
-            //     intervalle2 -= 1000;
-            //     console.log('intervalle 1 ' + intervalle1)
-            //     console.log('intervalle 2 ' + intervalle2)
-            //     if(intervalle1 <= 0)
-            //     {
-            //         console.log('intervalle 1 is over');  
-            //         task.children.style.border = '5px solid green';
-            //     }
-            //     if(intervalle2 <= 0)
-            //     {
-            //         clearInterval(time)
-            //         console.log('intervalle 2 is starting');  
-            //         task.children.style.border = '5px solid gray';
-            //     }
-            // },1000);
+            let intervalle1 = date_de_debut - date_actuel;
+            let intervalle2 = date_de_fin - date_actuel;
+            let time = setInterval(() =>  
+            {
+                intervalle1 -= 1000;
+                intervalle2 -= 1000;
+                console.log('intervalle 1 ' + intervalle1)
+                console.log('intervalle 2 ' + intervalle2)
+                if(intervalle1 <= 0)
+                {
+                    console.log('intervalle 1 is over');  
+                    task.firstChild.style.border = '5px solid green';
+                }
+                if(intervalle2 <= 0)
+                {
+                    clearInterval(time)
+                    console.log('intervalle 2 is starting');  
+                    task.firstChild.style.border = '5px solid gray';
+                }
+            },1000);
         notifier('tâche créee avec succès');
         moving();   
         clean();
