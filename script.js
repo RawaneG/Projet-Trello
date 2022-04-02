@@ -92,7 +92,6 @@ function creationColonne()
         i++;
         j++;
 }
-
 createurColonne.addEventListener('click', (e) => 
 {
     if(second_container.children.length >= 5)
@@ -119,7 +118,6 @@ createurColonne.addEventListener('click', (e) =>
         }
     }   
 })
-
 function myValues(element,variable)
 {
     for(let i = 0; i < element.length; i++)
@@ -165,6 +163,7 @@ function clean()
 }
 ajouter.addEventListener('click',(e) => 
 {
+
 const task = document.querySelector('.task');
     //  Récupération de la valeur du textarea
     const textarea = document.querySelectorAll('textarea');
@@ -204,8 +203,28 @@ const task = document.querySelector('.task');
         notifier('L\'heure de début doit être supérieur à l\'heure de fin');
     }
     else
-    {
+    {   
         task.prepend(myTask(textarea_value,date_value,begin_value,end_value));
+            // let intervalle1 = date_de_debut - date_actuel;
+            // let intervalle2 = date_de_fin - date_actuel;
+            // let time = setInterval(() =>  
+            // {
+            //     intervalle1 -= 1000;
+            //     intervalle2 -= 1000;
+            //     console.log('intervalle 1 ' + intervalle1)
+            //     console.log('intervalle 2 ' + intervalle2)
+            //     if(intervalle1 <= 0)
+            //     {
+            //         console.log('intervalle 1 is over');  
+            //         task.children.style.border = '5px solid green';
+            //     }
+            //     if(intervalle2 <= 0)
+            //     {
+            //         clearInterval(time)
+            //         console.log('intervalle 2 is starting');  
+            //         task.children.style.border = '5px solid gray';
+            //     }
+            // },1000);
         notifier('tâche créee avec succès');
         moving();   
         clean();
@@ -229,25 +248,34 @@ function delete_myTask(id)
     const my_task_toDelete = document.getElementById(`delete_task${id}`);
     const corbeille = document.querySelector('.corbeille');
     let grandpa_corbeille = my_task_toDelete.parentElement.parentElement;
-    grandpa_corbeille.firstChild.remove();
+    const bloc = grandpa_corbeille.parentElement.parentElement.parentElement.id;
+    const parent = document.getElementById(bloc);
     corbeille.append(grandpa_corbeille);
     notifier('Tâche supprimée avec succès');
-    const myTask = document.querySelectorAll('.icone_content');
-    for(let i = 0; i < myTask.length; i++)
+    const restaurer = document.getElementById(`restore_task${id}`);
+    restaurer.addEventListener('click',() => 
     {
-        myTask[i].addEventListener('mouseover',() => 
-        {
-            myTask[i].nextSibling.setAttribute('class','myDescription_affiche');
-        })
-        myTask[i].addEventListener('mouseout',() => 
-        {
-            myTask[i].nextSibling.setAttribute('class','myDescription');
-        })
+        parent.lastChild.firstChild.prepend(restaurer.parentElement.parentElement);
+        moving()
+        notifier('Tâche restaurée avec succès');
+
+    });
+    const trash = document.querySelector('.corbeille');
+    const trash_droite = trash.querySelectorAll('.droite');
+    const trash_gauche = trash.querySelectorAll('.gauche');
+    for (let i = 0; i < trash_droite.length; i++) 
+    {
+        trash_droite[i].style.visibility = 'hidden';
     }
-}
-function edit_myTask()
+    for (let i = 0; i < trash_gauche.length; i++) 
+    {
+        trash_gauche[i].style.visibility = 'hidden';
+    }
+}   
+function edit_myTask(id)
 {
-    
+    // const my_task_toEdit = document.getElementById(`edit_task${id}`);
+    // alert('ok')
 }
 function supprimer_colonne(id)
 {
@@ -302,7 +330,6 @@ function move(id,side)
         moving();
     }
 }
-
 function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
 {
     const myTask = document.createElement('div');
@@ -313,14 +340,17 @@ function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
         const action = document.createElement('div');
         action.setAttribute('class','action');
             const icone_delete = document.createElement('i');
-            icone_delete.classList.add('fa','fa-trash');
+            icone_delete.classList.add('fa','fa-trash','kakashi');
             icone_delete.setAttribute('id',`delete_task${k}`)
-            icone_delete.setAttribute('onclick',`delete_myTask(${k})`)
+            icone_delete.setAttribute('onclick',`delete_myTask(${k})`);
+            const icone_restore = document.createElement('i');  
+            icone_restore.classList.add('fa','fa-trash-restore','tobi');
+            icone_restore.setAttribute('id',`restore_task${k}`);
             const icone_edit = document.createElement('i');
-            icone_edit.classList.add('fa','fa-edit');
+            icone_edit.classList.add('fa','fa-edit','kakashi');
             icone_edit.setAttribute('id',`edit_task${k}`)
             icone_edit.setAttribute('onclick',`edit_myTask(${k})`)
-        action.append(icone_edit,icone_delete);
+        action.append(icone_edit,icone_restore,icone_delete);
             const gauche = document.createElement('div');
             gauche.setAttribute('class','gauche');
                 const gauche_icone = document.createElement('i');
@@ -348,11 +378,14 @@ function myDescription(datePara,heure_debutPara,heure_finPara)
     const myDescription = document.createElement('div');
     myDescription.setAttribute('class','myDescription');
     const date = document.createElement('h4');
+    date.setAttribute('class','date');
     date.innerText = datePara;
     const heure_debut = document.createElement('h4');
     heure_debut.innerText = heure_debutPara;
+    heure_debut.setAttribute('class','debut_heure');
     const heure_fin = document.createElement('h4');
     heure_fin.innerText = heure_finPara;
+    heure_fin.setAttribute('class','fin_heure');
     myDescription.append(date,heure_debut,heure_fin);
     return myDescription;
 }
@@ -416,3 +449,25 @@ function notifier(message)
         notification.setAttribute('class','notification');
     }, 3000)
 }
+
+
+// setInterval(() => {
+//     const blocs = document.querySelectorAll(".bloc")
+//     if(blocs.length > 0){
+//         blocs.forEach((bloc) => {
+//             tasks = bloc.querySelectorAll(".myTask")
+//             if(tasks.length > 0)
+//                 tasks.forEach((task) => {   
+
+//                     let intervalle = Date.parse(my_date_date + ' ' + fin_heure) - new Date().getTime()  
+//                     if(intervalle <= 0)
+//                     task.style.border = '5px solid gray';
+                    
+//                     let intervalle2 =  Date.parse(my_date_date + ' ' + debut_heure) - new Date().getTime() 
+//                     if(intervalle2 <= 0)
+//                     task.style.border = '5px solid red';
+//                     console.log(intervalle2)
+//                 })
+//         })
+//     }
+// }, 1000)

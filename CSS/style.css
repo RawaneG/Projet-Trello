@@ -15,6 +15,7 @@ body
     align-items: center;
     overflow: hidden;
     font-family: sans-serif;
+    line-break: anywhere;
 }
 body::after
 {
@@ -27,7 +28,7 @@ body::after
     z-index: -1;
 }
 /******************************************* CREATION CONTENT ************************************************/
-.demarrage_bouton
+.demarrage_bouton,.demarrage_bouton_close
 {
     position: absolute;
     opacity: 1;
@@ -46,13 +47,9 @@ body::after
 .demarrage_bouton_close
 {
     opacity: 0;
-    position: absolute;
-    top: 35%;
-    border-radius:50%;
-    transition: all 2s;  
 }
 /********************************************* PREMIER DIV  ************************************************/
-.first_container_deroule
+.first_container_deroule,.first_container
 {
     background-color: white;
     height: 10%;
@@ -65,13 +62,6 @@ body::after
 }
 .first_container
 {
-    background-color: white;
-    height: 10%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    transition: 0.3s ease-in-out;
     transform: translateY(-100%);
 }
 /********************************************* COLONNE ET NOTE ************************************************/
@@ -113,13 +103,15 @@ body::after
     z-index: 0;
 }
 /********************************************* SECOND DIV  ************************************************/
-.myDescription_affiche,.action
+.myDescription_affiche,.action,.myDescription
 {
     background: rgb(255, 255, 255);
     color: black;
     border-radius: 0.3em;
     padding: 3%;
     width: 100%;
+    display: flex;
+    justify-content: space-evenly;
     transition: 0.5s ease-in-out;
     transform: scale(1);
     box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
@@ -131,15 +123,8 @@ body::after
 }
 .myDescription
 {
-    background: rgb(255, 255, 255);
-    color: black;
     transform: scale(0);
-    border-radius: 0.3em;
     padding: 0%;
-    width: 100%;
-    height: 0;
-    transition: 0.5s ease-in-out;
-    box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
 } 
 .bloc
 {
@@ -151,7 +136,7 @@ body::after
     background-position: 50% 50%;
     animation: bounce 0.5s linear;
 }
-.myInpute
+.myInpute,.myInputs
 {
     background-color: rgba(214, 211, 211, 0.445);
     padding: 3%;
@@ -165,15 +150,6 @@ body::after
 }
 .myInputs
 {
-    background-color: rgba(104, 104, 104, 0.445);
-    padding: 3%;
-    height: 6%;
-    width: 100%;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-    font-size: 1.5em;
-    border: none;
     outline: none;
 }
 .bloc_son
@@ -270,7 +246,7 @@ body::after
 
  } 
 /********************************* CREATION DU POP UP DE SUPPRESSION**********************************************/
-.delete_pop_up
+.delete_pop_up,.delete_pop_up_affiche
 {
     content: '';
     position: fixed;
@@ -287,18 +263,7 @@ body::after
 }
 .delete_pop_up_affiche
 {
-    content: '';
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transform: scale(1);
-    transition: 0.4s ease-in-out;
 }
 .confirm_delete
 {
@@ -336,8 +301,26 @@ body::after
 {
     background-color: rgb(134, 134, 134);
 }
+.date,.debut_heure,.fin_heure
+{
+    padding: 3%;
+    border-radius: 0.5em;
+    color: white;
+}
+.date
+{
+    background-color: #cacaca;
+}
+.debut_heure
+{
+    background-color: #47ff50;
+}
+.fin_heure
+{
+    background-color: #ff2b2b;
+}
 /*************************************** CREATION DU POP UP **********************************************/
-.pop_up
+.pop_up,.pop_up_affiche
 {
     content: '';
     position: fixed;
@@ -354,18 +337,7 @@ body::after
 }
 .pop_up_affiche
 {
-    content: '';
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transform: scale(1);
-    transition: 0.4s ease-in-out;
 }
 .container
 {
@@ -431,6 +403,7 @@ body::after
     min-height: 20vh;
     max-height: 20vh;
     outline: none;
+    line-break: auto;
 }
 /**************************************** LES LABELS DU POP UP *****************************************/
 label
@@ -473,7 +446,7 @@ label
     background-color: #02aa0a;
 }
 /****************************************** MENU CORBEILLE ***********************************************/
-.trash_menu
+.trash_menu,.trash_menu_open
 {
     position: absolute;
     right: 0;
@@ -489,16 +462,6 @@ label
 }
 .trash_menu_open
 {
-    position: absolute;
-    right: 0;
-    top: 1%;
-    z-index: 1;
-    width: 30%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    transition: all 0.5s ease-in-out;
     transform: translateX(0%);
 }
 .trash
@@ -531,8 +494,16 @@ label
     padding: 5%;
     border-bottom: 2px solid white;
 }
+.corbeille .kakashi,.myTask .tobi
+{
+    visibility: hidden;
+}
+.corbeille .action .tobi
+{
+    visibility: visible;
+}
 /****************************************** NOTIFICATION ***********************************************/
-.notification
+.notification,.notification_affiche
 {
     background-color: rgb(108, 108, 243);
     position: absolute;
@@ -551,19 +522,6 @@ label
 }
 .notification_affiche
 {
-    background-color: rgb(108, 108, 243);
-    position: absolute;
-    width: 40%;
-    height: 10%;
-    right: 0;
-    bottom: 0;
-    color: white;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.6s ease-in-out;
     animation: bounce 0.5s linear;    
     transform: translateY(0%);
-    z-index: 10;
 }
