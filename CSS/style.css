@@ -34,7 +34,7 @@ body::after
     opacity: 1;
     top: 35%;
     border-radius:50%;
-    transition: all 0.3s;   
+    transition: all 0.5s;   
 }
 .demarrage_bouton img
 {
@@ -47,6 +47,7 @@ body::after
 .demarrage_bouton_close
 {
     opacity: 0;
+    transition: all 2s;   
 }
 /********************************************* PREMIER DIV  ************************************************/
 .first_container_deroule,.first_container
@@ -57,7 +58,7 @@ body::after
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    transition: 0.3s ease-in-out;
+    transition: 0.5s ease-in-out;
     transform: translateY(0%);
 }
 .first_container

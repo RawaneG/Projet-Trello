@@ -1,3 +1,4 @@
+const my_Back_Link = 'http://localhost:3000/?controller=tache&action=';
                                 // CREATION DU BOUTON DEMARREUR
 const body = document.querySelector('body');
     const demarrage = document.createElement('div');
@@ -27,7 +28,7 @@ first_container.setAttribute('class','first_container');
     note.append(note_icone,note_para);
                             //  CREATION DE LA PARTIE NOTE DU GENERATEUR
     const save = document.createElement('div');
-    save.setAttribute('class','note');
+    save.classList.add('save','note');
         const save_icone = document.createElement('i');
         save_icone.classList.add('fa','fa-plus');
         const save_para = document.createElement('p');
@@ -57,10 +58,16 @@ let k = 0;
 function blocRebuild() 
 {
     const bloc = document.querySelectorAll('.bloc');
-    const input = document.querySelectorAll('.myInputs');
     for (let index = 0; index < bloc.length; index++) 
     {
         bloc[index].setAttribute('id',`${index}`);
+    }
+}
+function inputRebuild() 
+{
+    const input = document.querySelectorAll('.myInputs');
+    for (let index = 0; index < input.length; index++) 
+    {
         input[index].innerText = `Colonne ${index + 1}`;
     }
 }
@@ -112,6 +119,7 @@ createurColonne.addEventListener('click', (e) =>
         notifier('Colonne créee avec succès');
         moving();
         blocRebuild();
+        inputRebuild() 
         const myTitle = document.querySelectorAll('.myInputs');
         for(let i = 0; i < myTitle.length; i++)
         {
@@ -122,6 +130,7 @@ createurColonne.addEventListener('click', (e) =>
                 input.value = myTitle[i].innerText;
                 myTitle[i].replaceWith(input);
                 blocRebuild();
+                inputRebuild() 
             })
         }
     }   
@@ -171,7 +180,6 @@ function clean()
 }
 ajouter.addEventListener('click',(e) => 
 {
-
 const task = document.querySelector('.task');
     //  Récupération de la valeur du textarea
     const textarea = document.querySelectorAll('textarea');
@@ -213,26 +221,6 @@ const task = document.querySelector('.task');
     else
     {   
         task.prepend(myTask(textarea_value,date_value,begin_value,end_value));
-            let intervalle1 = date_de_debut - date_actuel;
-            let intervalle2 = date_de_fin - date_actuel;
-            let time = setInterval(() =>  
-            {
-                intervalle1 -= 1000;
-                intervalle2 -= 1000;
-                console.log('intervalle 1 ' + intervalle1)
-                console.log('intervalle 2 ' + intervalle2)
-                if(intervalle1 <= 0)
-                {
-                    console.log('intervalle 1 is over');  
-                    task.firstChild.style.border = '5px solid green';
-                }
-                if(intervalle2 <= 0)
-                {
-                    clearInterval(time)
-                    console.log('intervalle 2 is starting');  
-                    task.firstChild.style.border = '5px solid gray';
-                }
-            },1000);
         notifier('tâche créee avec succès');
         moving();   
         clean();
@@ -251,22 +239,25 @@ const task = document.querySelector('.task');
         }
     }
 })
+function grandparent(element)
+{
+    return element.parentElement.parentElement;
+}
 function delete_myTask(id)
 {
     const my_task_toDelete = document.getElementById(`delete_task${id}`);
     const corbeille = document.querySelector('.corbeille');
-    let grandpa_corbeille = my_task_toDelete.parentElement.parentElement;
-    const bloc = grandpa_corbeille.parentElement.parentElement.parentElement.id;
+    let grandpa_corbeille = grandparent(my_task_toDelete);
+    const bloc = grandparent(grandpa_corbeille).parentElement.id;
     const parent = document.getElementById(bloc);
     corbeille.append(grandpa_corbeille);
     notifier('Tâche supprimée avec succès');
     const restaurer = document.getElementById(`restore_task${id}`);
     restaurer.addEventListener('click',() => 
     {
-        parent.lastChild.firstChild.prepend(restaurer.parentElement.parentElement);
+        parent.lastChild.firstChild.prepend(grandparent(restaurer));
         moving()
         notifier('Tâche restaurée avec succès');
-
     });
     const trash = document.querySelector('.corbeille');
     const trash_droite = trash.querySelectorAll('.droite');
@@ -280,11 +271,6 @@ function delete_myTask(id)
         trash_gauche[i].style.visibility = 'hidden';
     }
 }   
-function edit_myTask(id)
-{
-    // const my_task_toEdit = document.getElementById(`edit_task${id}`);
-    // alert('ok')
-}
 function supprimer_colonne(id)
 {
     const pop_suppression = document.querySelector('.delete_pop_up');
@@ -304,11 +290,12 @@ function supprimer_colonne(id)
         {
             if(confirm)
             {
-                supprimer.parentElement.parentElement.remove();
+                grandparent(supprimer).remove();
                 pop_suppression.setAttribute('class','delete_pop_up');
                 moving();
                 notifier('colonne supprimée avec succès');
                 blocRebuild();
+                inputRebuild() 
                 j = 0;
             }
         })
@@ -324,7 +311,7 @@ function move(id,side)
     if(side == 'left')
     {
         let left = document.getElementById(`myTask_${id}`);
-        let leftParent = left.parentElement.parentElement.parentElement.id;
+        let leftParent = grandparent(left).parentElement.id;
         let parentPrecedent = +(leftParent) - 1;
         document.getElementById(parentPrecedent).querySelector('.task').appendChild(left)
         moving();
@@ -332,7 +319,7 @@ function move(id,side)
     else
     {
         let right = document.getElementById(`myTask_${id}`);
-        let rightParent = right.parentElement.parentElement.parentElement.id;
+        let rightParent = grandparent(right).parentElement.id;
         let parentSuivant = +(rightParent) + 1;
         document.getElementById(parentSuivant).querySelector('.task').appendChild(right)
         moving();
@@ -458,24 +445,92 @@ function notifier(message)
     }, 3000)
 }
 
+let time = setInterval(() => 
+{
+    const mes_taches = document.querySelectorAll('.myTask');
+    mes_taches.forEach((e) => 
+    {
+        const date = e.querySelector('.date').innerText;
+        const mon_heure_debut = e.querySelector('.debut_heure').innerText;
+        const mon_heure_fin = e.querySelector('.fin_heure').innerText;
 
-// setInterval(() => {
-//     const blocs = document.querySelectorAll(".bloc")
-//     if(blocs.length > 0){
-//         blocs.forEach((bloc) => {
-//             tasks = bloc.querySelectorAll(".myTask")
-//             if(tasks.length > 0)
-//                 tasks.forEach((task) => {   
+        let date_actuel = new Date().getTime();
+        let date_de_debut = Date.parse(date + ' ' + mon_heure_debut);
+        let date_de_fin = Date.parse(date + ' ' + mon_heure_fin);
 
-//                     let intervalle = Date.parse(my_date_date + ' ' + fin_heure) - new Date().getTime()  
-//                     if(intervalle <= 0)
-//                     task.style.border = '5px solid gray';
-                    
-//                     let intervalle2 =  Date.parse(my_date_date + ' ' + debut_heure) - new Date().getTime() 
-//                     if(intervalle2 <= 0)
-//                     task.style.border = '5px solid red';
-//                     console.log(intervalle2)
-//                 })
-//         })
-//     }
-// }, 1000)
+        let intervalle1 = date_de_debut - date_actuel;
+        let intervalle2 = date_de_fin - date_actuel;
+
+        if(intervalle1 <= 0)
+        {
+            e.style.border = '5px solid green';
+        }
+        if(intervalle2 <= 0)
+        {
+            e.style.border = '5px solid gray';
+        }
+
+    });
+},1000);
+
+const save_state = document.querySelector('.save');
+save_state.addEventListener('click',() => 
+{
+    function add(indice,colonnes,texte,dates,debut,fin)
+    {
+        fetch(my_Back_Link + indice,
+            {
+                method : "POST",
+                body : JSON.stringify(
+                    {
+                        mes_colonnes : colonnes,
+                        mes_taches : texte,
+                        mes_dates : dates,
+                        mes_heures_debut : debut,
+                        mes_heures_fin : fin,
+                    })
+            })
+    }
+    let saved_columns = [];
+    let saved_task = [];
+    let saved_date = [];
+    let saved_task_start = [];
+    let saved_task_end = [];
+    const my_saved_blocs= document.querySelectorAll('.bloc');
+    my_saved_blocs.forEach((columns) => 
+    {
+        if(columns.firstChild.value == undefined)
+        {
+            saved_columns.push(columns.firstChild.innerText);
+        }
+        else
+        {
+            saved_columns.push(columns.firstChild.value);
+        }
+        const mytext = columns.querySelectorAll('.text');
+
+        mytext.forEach((description) => 
+            {
+                saved_task.push(description.innerText);
+            })
+        const mydate = columns.querySelectorAll('.date');
+
+        mydate.forEach((date) => 
+            {
+                saved_date.push(date.innerText);
+            })
+        const my_task_start = columns.querySelectorAll('.debut_heure');
+
+        my_task_start.forEach((heure_debut) => 
+            {
+                saved_task_start.push(heure_debut.innerText);
+            })
+        const my_task_end = columns.querySelectorAll('.fin_heure');
+
+        my_task_end.forEach((heure_fin) => 
+            {
+                saved_task_end.push(heure_fin.innerText);
+            })
+    })
+    add('ajouter',saved_columns,saved_task,saved_date,saved_task_start,saved_task_end);
+});
