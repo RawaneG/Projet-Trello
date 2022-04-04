@@ -1,4 +1,4 @@
-const my_Back_Link = 'http://localhost:3000/?controller=tache&action=';
+const my_Back_Link = 'http://localhost:81/Trello/public/?controller=tache&action=';
                                 // CREATION DU BOUTON DEMARREUR
 const body = document.querySelector('body');
     const demarrage = document.createElement('div');
@@ -328,7 +328,7 @@ function move(id,side)
 function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
 {
     const myTask = document.createElement('div');
-    myTask.setAttribute('class','myTask');
+    myTask.classList.add('myTask');
     myTask.setAttribute('id',`myTask_${k}`);
         const icones_content = document.createElement('div');
         icones_content.setAttribute('class','icone_content');
@@ -463,11 +463,22 @@ let time = setInterval(() =>
 
         if(intervalle1 <= 0)
         {
-            e.style.border = '5px solid green';
+            e.classList.add('pulse');
+            e.style.border = '4px solid green';
         }
         if(intervalle2 <= 0)
         {
-            e.style.border = '5px solid gray';
+            let my_icones = e.querySelectorAll('.kakashi');
+            my_icones.forEach((e) => 
+            {
+                e.classList.add('tobi');
+            })
+            let gauche = e.querySelector('.gauche');
+            let droite = e.querySelector('.droite');
+            gauche.classList.add('icone_invisible');
+            droite.classList.add('.icone_invisible');
+            e.classList.remove('pulse');
+            e.style.border = '4px solid gray';
         }
 
     });

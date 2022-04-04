@@ -115,7 +115,7 @@ body::after
     justify-content: space-evenly;
     transition: 0.5s ease-in-out;
     transform: scale(1);
-    box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
+    box-shadow: inset 15px 0 7px -6px rgba(104, 104, 104, 0.445), inset -15px 0 7px -6px rgba(104, 104, 104, 0.445);
 } 
 .action
 {
@@ -168,7 +168,7 @@ body::after
     display: flex;
     flex-direction: column;
 }
-.myTask
+.myTask,.pulse
 {
     background: rgb(255, 255, 255);
     color: black;
@@ -181,8 +181,27 @@ body::after
     align-items: center;
     min-height: 7%;
     cursor: pointer;
-    animation: bounce 0.5s linear;    
+    animation: bounce 0.5s linear;  
     box-shadow: inset 15px 0 7px -5px rgba(104, 104, 104, 0.445), inset -15px 0 7px -5px rgba(104, 104, 104, 0.445);
+}
+.pulse
+{
+    animation: pulse 1s infinite;  
+}
+@keyframes pulse 
+{
+    0% 
+    {
+      box-shadow: 0 0 0 5px rgba(74, 241, 48, 0.4);
+    }
+    70% 
+    {
+        box-shadow: 0 0 0 20px rgba(15, 255, 2, 0);
+    }
+    100% 
+    {
+        box-shadow: 0 0 0 5px rgba(63, 204, 44, 0);
+    }
 }
 .icone_content
 {
@@ -197,6 +216,10 @@ body::after
     transition: all 1s ease;
     cursor: pointer;
     color: black;
+}
+.icone_invisible
+{
+    visibility: hidden;
 }
 .gauche:hover,.droite:hover
 {
