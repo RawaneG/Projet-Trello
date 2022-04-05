@@ -325,7 +325,7 @@ function move(id,side)
         moving();
     }
 }
-function myTask(tachePara,datePara,heure_debutPara,heure_finPara)
+function myTask(tachePara='',datePara='',heure_debutPara='',heure_finPara='')
 {
     const myTask = document.createElement('div');
     myTask.classList.add('myTask');
@@ -475,8 +475,8 @@ let time = setInterval(() =>
             })
             let gauche = e.querySelector('.gauche');
             let droite = e.querySelector('.droite');
-            gauche.classList.add('icone_invisible');
-            droite.classList.add('.icone_invisible');
+            gauche.style.visibility = 'hidden';
+            droite.style.visibility = 'hidden';
             e.classList.remove('pulse');
             e.style.border = '4px solid gray';
         }
@@ -485,63 +485,140 @@ let time = setInterval(() =>
 },1000);
 
 const save_state = document.querySelector('.save');
-save_state.addEventListener('click',() => 
+save_state.addEventListener('click',() =>   
 {
-    function add(indice,colonnes,texte,dates,debut,fin)
+    function add(indice,colonnes)
     {
         fetch(my_Back_Link + indice,
             {
                 method : "POST",
                 body : JSON.stringify(
                     {
-                        mes_colonnes : colonnes,
-                        mes_taches : texte,
-                        mes_dates : dates,
-                        mes_heures_debut : debut,
-                        mes_heures_fin : fin,
+                        mes_colonnes : colonnes
                     })
             })
     }
-    let saved_columns = [];
-    let saved_task = [];
-    let saved_date = [];
-    let saved_task_start = [];
-    let saved_task_end = [];
+    let saved_columns = {};
+
     const my_saved_blocs= document.querySelectorAll('.bloc');
+    
     my_saved_blocs.forEach((columns) => 
     {
         if(columns.firstChild.value == undefined)
         {
-            saved_columns.push(columns.firstChild.innerText);
+            saved_columns[columns.firstChild.innerText] = [];
+            const mytext = columns.querySelectorAll('.text')
+                mytext.forEach((tache) => 
+                {
+                    saved_columns[columns.firstChild.innerText].push(tache.innerText);
+                })
+            const mydate = columns.querySelectorAll('.date');
+                mydate.forEach((date) => 
+                {
+                    saved_columns[columns.firstChild.innerText].push(date.innerText);
+                })
+            const my_task_start = columns.querySelectorAll('.debut_heure');
+                my_task_start.forEach((heure_debut) => 
+                {
+                    saved_columns[columns.firstChild.innerText].push(heure_debut.innerText);
+                })
+                const my_task_end = columns.querySelectorAll('.fin_heure');
+                my_task_end.forEach((heure_fin) => 
+                {
+                    saved_columns[columns.firstChild.innerText].push(heure_fin.innerText);
+                })
         }
         else
         {
-            saved_columns.push(columns.firstChild.value);
+            saved_columns[columns.firstChild.value] = [];
+            const mytext = columns.querySelectorAll('.text')
+                mytext.forEach((tache) => 
+                {
+                    saved_columns[columns.firstChild.value].push(tache.innerText);
+                })
+            const mydate = columns.querySelectorAll('.date');
+                mydate.forEach((date) => 
+                {
+                    saved_columns[columns.firstChild.value].push(date.innerText);
+                })
+            const my_task_start = columns.querySelectorAll('.debut_heure');
+                my_task_start.forEach((heure_debut) => 
+                {
+                    saved_columns[columns.firstChild.value].push(heure_debut.innerText);
+                })
+                const my_task_end = columns.querySelectorAll('.fin_heure');
+                my_task_end.forEach((heure_fin) => 
+                {
+                    saved_columns[columns.firstChild.value].push(heure_fin.innerText);
+                })
         }
-        const mytext = columns.querySelectorAll('.text');
-
-        mytext.forEach((description) => 
-            {
-                saved_task.push(description.innerText);
-            })
-        const mydate = columns.querySelectorAll('.date');
-
-        mydate.forEach((date) => 
-            {
-                saved_date.push(date.innerText);
-            })
-        const my_task_start = columns.querySelectorAll('.debut_heure');
-
-        my_task_start.forEach((heure_debut) => 
-            {
-                saved_task_start.push(heure_debut.innerText);
-            })
-        const my_task_end = columns.querySelectorAll('.fin_heure');
-
-        my_task_end.forEach((heure_fin) => 
-            {
-                saved_task_end.push(heure_fin.innerText);
-            })
     })
-    add('ajouter',saved_columns,saved_task,saved_date,saved_task_start,saved_task_end);
+    add('ajouter',saved_columns);
+    notifier('Etat Sauvegardé avec succès');
 });
+
+let myCount = 1;
+
+fetch(my_Back_Link + 'restauration')
+.then((myData) => 
+{
+    return myData.json();
+})
+.then((json) => 
+{
+    json.MyStates.forEach((e) => 
+        {
+            if(myCount == 1)
+            {
+                e.mes_colonnes;
+                for (const value in e.mes_colonnes) 
+                {
+                    value;
+                    creationColonne();
+                    const task = document.querySelector('.task');
+                    task.prepend(myTask());
+                    const tache = document.querySelector('.text');
+                    tache.innerText = e.mes_colonnes[value][0];
+                    const date = document.querySelector('.date');
+                    date.innerText = e.mes_colonnes[value][1];
+                    const heure_debut = document.querySelector('.debut_heure');
+                    heure_debut.innerText = e.mes_colonnes[value][2];
+                    const fin_debut = document.querySelector('.fin_heure');
+                    fin_debut.innerText = e.mes_colonnes[value][3];
+                    moving();
+                    blocRebuild();
+                    inputRebuild() 
+                    const my_tache = document.querySelectorAll('.icone_content');
+                    for(let i = 0; i < my_tache.length; i++)
+                    {
+                        my_tache[i].addEventListener('mouseover',() => 
+                        {
+                            my_tache[i].nextSibling.setAttribute('class','myDescription_affiche');
+                        })
+                        my_tache[i].addEventListener('mouseout',() => 
+                        {
+                            my_tache[i].nextSibling.setAttribute('class','myDescription');
+                        })
+                    }
+                    const myTitle = document.querySelectorAll('.myInputs');
+                    for(let i = 0; i < myTitle.length; i++)
+                    {
+                        myTitle[i].addEventListener('dblclick',() => 
+                        {                
+                            let input = document.createElement('input');
+                            input.setAttribute('class','myInpute');
+                            input.value = myTitle[i].innerText;
+                            myTitle[i].replaceWith(input);
+                            blocRebuild();
+                            inputRebuild() 
+                        })
+                    }
+                }
+                myCount++;
+            }
+            else
+            {
+                return;
+            }
+        })
+})

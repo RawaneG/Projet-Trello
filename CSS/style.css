@@ -136,6 +136,7 @@ body::after
     background-repeat: no-repeat;
     background-position: 50% 50%;
     animation: bounce 0.5s linear;
+    overflow-x: hidden;
 }
 .myInpute,.myInputs
 {
@@ -549,3 +550,4 @@ label
     animation: bounce 0.5s linear;    
     transform: translateY(0%);
 }
+/***********************************************     LISTE MENU       *************************************************/
