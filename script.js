@@ -487,138 +487,71 @@ let time = setInterval(() =>
 const save_state = document.querySelector('.save');
 save_state.addEventListener('click',() =>   
 {
-    function add(indice,colonnes)
-    {
-        fetch(my_Back_Link + indice,
-            {
-                method : "POST",
-                body : JSON.stringify(
-                    {
-                        mes_colonnes : colonnes
-                    })
-            })
-    }
-    let saved_columns = {};
+    let saved_columns = [];
 
     const my_saved_blocs= document.querySelectorAll('.bloc');
     
-    my_saved_blocs.forEach((columns) => 
+    my_saved_blocs.forEach((colonne_actuelle) => 
     {
-        if(columns.firstChild.value == undefined)
+        if(colonne_actuelle.firstChild.value == undefined)
         {
-            saved_columns[columns.firstChild.innerText] = [];
-            const mytext = columns.querySelectorAll('.text')
-                mytext.forEach((tache) => 
+            let myColumn = colonne_actuelle.firstChild.innerText;
+            let conteneurTache = [];
+            let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+            mesTaches.forEach(tacheActuelle => 
                 {
-                    saved_columns[columns.firstChild.innerText].push(tache.innerText);
+                    conteneurTache.push(
+                        {
+                            'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                            'Date ' : tacheActuelle.querySelector('.date').innerText,
+                            'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                            'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                        }
+                    )
+
                 })
-            const mydate = columns.querySelectorAll('.date');
-                mydate.forEach((date) => 
-                {
-                    saved_columns[columns.firstChild.innerText].push(date.innerText);
-                })
-            const my_task_start = columns.querySelectorAll('.debut_heure');
-                my_task_start.forEach((heure_debut) => 
-                {
-                    saved_columns[columns.firstChild.innerText].push(heure_debut.innerText);
-                })
-                const my_task_end = columns.querySelectorAll('.fin_heure');
-                my_task_end.forEach((heure_fin) => 
-                {
-                    saved_columns[columns.firstChild.innerText].push(heure_fin.innerText);
-                })
+            saved_columns.push(     
+                       {
+                'Colonne' : myColumn,
+                'Taches' : conteneurTache
+            })
         }
         else
         {
-            saved_columns[columns.firstChild.value] = [];
-            const mytext = columns.querySelectorAll('.text')
-                mytext.forEach((tache) => 
+            let myColumn = colonne_actuelle.firstChild.innerText;
+            let conteneurTache = [];
+            let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+            mesTaches.forEach(tacheActuelle => 
                 {
-                    saved_columns[columns.firstChild.value].push(tache.innerText);
+                    conteneurTache.push(
+                        {
+                            'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                            'Date ' : tacheActuelle.querySelector('.date').innerText,
+                            'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                            'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                        }
+                    )
+
                 })
-            const mydate = columns.querySelectorAll('.date');
-                mydate.forEach((date) => 
-                {
-                    saved_columns[columns.firstChild.value].push(date.innerText);
-                })
-            const my_task_start = columns.querySelectorAll('.debut_heure');
-                my_task_start.forEach((heure_debut) => 
-                {
-                    saved_columns[columns.firstChild.value].push(heure_debut.innerText);
-                })
-                const my_task_end = columns.querySelectorAll('.fin_heure');
-                my_task_end.forEach((heure_fin) => 
-                {
-                    saved_columns[columns.firstChild.value].push(heure_fin.innerText);
-                })
+            saved_columns.push(     
+                       {
+                'Colonne' : myColumn,
+                'Taches' : conteneurTache
+            })
         }
     })
-    add('ajouter',saved_columns);
+    fetch(my_Back_Link + 'ajouter',
+        {
+            method : "POST",
+            body : JSON.stringify(saved_columns)
+        })
     notifier('Etat Sauvegardé avec succès');
 });
 
-let myCount = 1;
-
-fetch(my_Back_Link + 'restauration')
-.then((myData) => 
-{
-    return myData.json();
-})
-.then((json) => 
-{
-    json.MyStates.forEach((e) => 
-        {
-            if(myCount == 1)
-            {
-                e.mes_colonnes;
-                for (const value in e.mes_colonnes) 
-                {
-                    value;
-                    creationColonne();
-                    const task = document.querySelector('.task');
-                    task.prepend(myTask());
-                    const tache = document.querySelector('.text');
-                    tache.innerText = e.mes_colonnes[value][0];
-                    const date = document.querySelector('.date');
-                    date.innerText = e.mes_colonnes[value][1];
-                    const heure_debut = document.querySelector('.debut_heure');
-                    heure_debut.innerText = e.mes_colonnes[value][2];
-                    const fin_debut = document.querySelector('.fin_heure');
-                    fin_debut.innerText = e.mes_colonnes[value][3];
-                    moving();
-                    blocRebuild();
-                    inputRebuild() 
-                    const my_tache = document.querySelectorAll('.icone_content');
-                    for(let i = 0; i < my_tache.length; i++)
-                    {
-                        my_tache[i].addEventListener('mouseover',() => 
-                        {
-                            my_tache[i].nextSibling.setAttribute('class','myDescription_affiche');
-                        })
-                        my_tache[i].addEventListener('mouseout',() => 
-                        {
-                            my_tache[i].nextSibling.setAttribute('class','myDescription');
-                        })
-                    }
-                    const myTitle = document.querySelectorAll('.myInputs');
-                    for(let i = 0; i < myTitle.length; i++)
-                    {
-                        myTitle[i].addEventListener('dblclick',() => 
-                        {                
-                            let input = document.createElement('input');
-                            input.setAttribute('class','myInpute');
-                            input.value = myTitle[i].innerText;
-                            myTitle[i].replaceWith(input);
-                            blocRebuild();
-                            inputRebuild() 
-                        })
-                    }
-                }
-                myCount++;
-            }
-            else
-            {
-                return;
-            }
-        })
-})
+// let myCount = 1;
+ 
+// fetch(my_Back_Link + 'restauration')
+// .then((myData) => 
+// {
+//     return myData.json();
+// })
