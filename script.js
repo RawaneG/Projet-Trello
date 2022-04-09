@@ -484,7 +484,9 @@ let time = setInterval(() =>
     });
 },1000);
 
+let similarity = false;
 const save_state = document.querySelector('.save');
+const mes_etats = document.querySelector('.mes_etats');
 save_state.addEventListener('click',() =>   
 {
     let saved_columns = [];
@@ -518,7 +520,7 @@ save_state.addEventListener('click',() =>
         }
         else
         {
-            let myColumn = colonne_actuelle.firstChild.innerText;
+            let myColumn = colonne_actuelle.firstChild.value;
             let conteneurTache = [];
             let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
             mesTaches.forEach(tacheActuelle => 
@@ -547,11 +549,20 @@ save_state.addEventListener('click',() =>
         })
     notifier('Etat Sauvegardé avec succès');
 });
-
-// let myCount = 1;
- 
-// fetch(my_Back_Link + 'restauration')
-// .then((myData) => 
-// {
-//     return myData.json();
-// })
+let n = 1;
+fetch(my_Back_Link + 'restauration')
+.then(myData => 
+{
+    return myData.json();
+})
+.then(json => 
+{
+    for (const key in json) 
+    {
+        let etat = document.createElement('h2');
+        etat.setAttribute('class','mes_dates');
+        etat.innerText = `État ${n} : ` + key;
+        mes_etats.append(etat);
+        n++;
+    }
+})
