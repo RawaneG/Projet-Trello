@@ -484,7 +484,6 @@ let time = setInterval(() =>
     });
 },1000);
 
-let similarity = false;
 const save_state = document.querySelector('.save');
 const mes_etats = document.querySelector('.mes_etats');
 save_state.addEventListener('click',() =>   
@@ -549,7 +548,7 @@ save_state.addEventListener('click',() =>
         })
     notifier('Etat Sauvegardé avec succès');
 });
-let n = 1;
+
 fetch(my_Back_Link + 'restauration')
 .then(myData => 
 {
@@ -561,8 +560,134 @@ fetch(my_Back_Link + 'restauration')
     {
         let etat = document.createElement('h2');
         etat.setAttribute('class','mes_dates');
-        etat.innerText = `État ${n} : ` + key;
+        etat.innerText =  key;
         mes_etats.append(etat);
-        n++;
     }
+    const mes_dates_clique = document.querySelectorAll('.mes_dates');
+    mes_dates_clique.forEach(element => 
+    {
+        element.addEventListener('click', () => 
+        {
+            second_container.innerHTML = '';
+            blocRebuild();
+            inputRebuild();
+            j = 0;
+            let length = json[element.innerText].length - 1;
+            json[element.innerText][length].forEach(colonnes => 
+                {
+                    creationColonne();
+                    const da_input = document.querySelectorAll('.myInputs');
+                    notifier('État restaurée avec succès');
+                    moving();
+                    const myTitle = document.querySelectorAll('.myInputs');
+                    for(let i = 0; i < myTitle.length; i++)
+                    {
+                        myTitle[i].addEventListener('dblclick',() => 
+                        {                
+                            let input = document.createElement('input');
+                            input.setAttribute('class','myInpute');
+                            input.value = myTitle[i].innerText;
+                            myTitle[i].replaceWith(input);
+                            blocRebuild();
+                            inputRebuild() 
+                        })
+                    }
+                    da_input[da_input.length-1].innerText = colonnes['Colonne'];
+                    if(colonnes['Taches'].length === 0)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        colonnes['Taches'].forEach(tache => 
+                            {
+                                const task = document.querySelectorAll('.task');
+                                task[task.length - 1].prepend(myTask(tache["Texte "],tache["Date "],tache["Heure de d\u00e9but "],tache["Heure de fin "]));
+                                moving();   
+                                clean();
+                                popUp.setAttribute('class','pop_up');
+                                const my_tache = document.querySelectorAll('.icone_content');
+                                for(let i = 0; i < my_tache.length; i++)
+                                {
+                                    my_tache[i].addEventListener('mouseover',() => 
+                                    {
+                                        my_tache[i].nextSibling.setAttribute('class','myDescription_affiche');
+                                    })
+                                    my_tache[i].addEventListener('mouseout',() => 
+                                    {
+                                        my_tache[i].nextSibling.setAttribute('class','myDescription');
+                                    })
+                                }
+                            })
+                    }
+                })
+        })
+    });
+})
+
+const autoSave = document.querySelector('.auto_save');
+autoSave.addEventListener('click',() => 
+{
+    notifier('Mode autosave activé'); 
+    setInterval(() => 
+    {
+        let saved_columns = [];
+
+        const my_saved_blocs= document.querySelectorAll('.bloc');
+        
+        my_saved_blocs.forEach((colonne_actuelle) => 
+        {
+            if(colonne_actuelle.firstChild.value == undefined)
+            {
+                let myColumn = colonne_actuelle.firstChild.innerText;
+                let conteneurTache = [];
+                let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+                mesTaches.forEach(tacheActuelle => 
+                    {
+                        conteneurTache.push(
+                            {
+                                'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                                'Date ' : tacheActuelle.querySelector('.date').innerText,
+                                'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                                'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                            }
+                        )
+    
+                    })
+                saved_columns.push(     
+                           {
+                    'Colonne' : myColumn,
+                    'Taches' : conteneurTache
+                })
+            }
+            else
+            {
+                let myColumn = colonne_actuelle.firstChild.value;
+                let conteneurTache = [];
+                let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+                mesTaches.forEach(tacheActuelle => 
+                    {
+                        conteneurTache.push(
+                            {
+                                'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                                'Date ' : tacheActuelle.querySelector('.date').innerText,
+                                'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                                'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                            }
+                        )
+    
+                    })
+                saved_columns.push(     
+                           {
+                    'Colonne' : myColumn,
+                    'Taches' : conteneurTache
+                })
+            }
+        })
+        fetch(my_Back_Link + 'ajouter',
+            {
+                method : "POST",
+                body : JSON.stringify(saved_columns)
+            })
+    }, 5000);
 })
