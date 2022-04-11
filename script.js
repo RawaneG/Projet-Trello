@@ -1,5 +1,5 @@
 const my_Back_Link = 'http://localhost:81/Trello/public/?controller=tache&action=';
-                                // CREATION DU BOUTON DEMARREUR
+                                    // CREATION DU BOUTON DEMARREUR
 const body = document.querySelector('body');
     const demarrage = document.createElement('div');
     demarrage.setAttribute('class','demarrage_bouton')
@@ -7,10 +7,10 @@ const body = document.querySelector('body');
         logo_demarrage.setAttribute('src','mylogo.png');
     demarrage.appendChild(logo_demarrage);
 body.appendChild(demarrage);
-                                    // CREATION DU GENERATEUR
+                                        // CREATION DU GENERATEUR
 const first_container = document.createElement('div');
 first_container.setAttribute('class','first_container');
-                            // CREATION DE LA PARTIE COLONNE DU GENERATEUR
+                                // CREATION DE LA PARTIE COLONNE DU GENERATEUR
     const colonne = document.createElement('div');
     colonne.setAttribute('class','colonne');
         const colonne_icone = document.createElement('i');
@@ -18,7 +18,7 @@ first_container.setAttribute('class','first_container');
         const colonne_para = document.createElement('p');
         colonne_para.innerHTML = 'Colonne';
     colonne.append(colonne_icone,colonne_para);
-                            //  CREATION DE LA PARTIE NOTE DU GENERATEUR
+                                //  CREATION DE LA PARTIE NOTE DU GENERATEUR
     const note = document.createElement('div');
     note.setAttribute('class','note');
         const note_icone = document.createElement('i');
@@ -26,7 +26,7 @@ first_container.setAttribute('class','first_container');
         const note_para = document.createElement('p');
         note_para.innerHTML = 'Note';
     note.append(note_icone,note_para);
-                            //  CREATION DE LA PARTIE NOTE DU GENERATEUR
+                                //  CREATION DE LA PARTIE NOTE DU GENERATEUR
     const save = document.createElement('div');
     save.classList.add('save','note');
         const save_icone = document.createElement('i');
@@ -34,24 +34,24 @@ first_container.setAttribute('class','first_container');
         const save_para = document.createElement('p');
         save_para.innerHTML = 'Sauvegarder Etat';
     save.append(save_icone,save_para);
-                        //  ATTRIBUTION DE LA COLONNE ET DE LA NOTE AU GENERATEUR
+                            //  ATTRIBUTION DE LA COLONNE ET DE LA NOTE AU GENERATEUR
 first_container.append(colonne,note,save);
 body.append(first_container);
-                                //  BOUTON DE CREATION DU GENERATEUR
+                                    //  BOUTON DE CREATION DU GENERATEUR
 
 const derouler = document.querySelector('.first_container');  
 const demarre = document.querySelector('.demarrage_bouton');                      
 demarrage.addEventListener('click',() => 
 {
-    first_container.setAttribute('class','first_container_deroule');
-    demarre.setAttribute('class','demarrage_bouton_close');
+    first_container.classList.toggle('first_container_deroule');
+    first_container.classList.toggle('first_container');
 })
                                     //  CREATION DU GENERATEUR DE COLONNE
 const createurColonne = document.querySelector('.colonne');
-                            //  ETAPE 1 : CREATION DU CONTENEUR DES COLONNES
+                                //  ETAPE 1 : CREATION DU CONTENEUR DES COLONNES
 const second_container = document.createElement('div');
 second_container.setAttribute('class','second_container');
-                     //  ETAPE 2 : CREATION D'UNE FONCTION DE CREATION DE COLONNE
+                            //  ETAPE 2 : CREATION D'UNE FONCTION DE CREATION DE COLONNE
 let i = 0;
 let j = 0;
 let k = 0;
@@ -143,9 +143,9 @@ function myValues(element,variable)
     }
     return variable;
 }
-                            //  CREATION DU GENERATEUR DES NOTES
+                                    //  CREATION DU GENERATEUR DES NOTES
 const createurNote = document.querySelector('.note');
-                        // EVENEMENT AU MOMENT OU L'ON CLIQUE SUR CREER NOTE
+                                // EVENEMENT AU MOMENT OU L'ON CLIQUE SUR CREER NOTE
 const popUp = document.querySelector('.pop_up');
 const fermer = document.querySelector('.fa-close');
 createurNote.addEventListener('click', (e) => 
@@ -243,6 +243,68 @@ function grandparent(element)
 {
     return element.parentElement.parentElement;
 }
+function edit_myTask(id)
+{
+    const my_task_toEdit = document.getElementById(`edit_task${id}`);
+    const text_to_edit = my_task_toEdit.querySelector('.text');
+    const date_to_edit = my_task_toEdit.querySelector('.date');
+    const beginH_to_edit = my_task_toEdit.querySelector('.debut_heure');
+    const endH_to_edit = my_task_toEdit.querySelector('.debut_fin');
+    my_task_toEdit.addEventListener('click',() => 
+    {
+        popUp.setAttribute('class','pop_up_affiche');
+        fermer.addEventListener('click',() => 
+        {
+            popUp.setAttribute('class','pop_up');
+        })
+        const textarea = document.querySelectorAll('textarea');
+        let textarea_value = '';
+        textarea_value = myValues(textarea,textarea_value);
+        //  Récupération de la valeur de la date
+        const date = document.querySelectorAll('input[type=date]');
+        let date_value = '';
+        date_value = myValues(date,date_value);
+        //  Récupération de la valeur de l'heure de début
+        const begin = document.querySelectorAll('.begintime');
+        let begin_value = '';
+        begin_value = myValues(begin,begin_value);
+        //  Récupération de la valeur de l'heure de fin
+        const end = document.querySelectorAll('.endtime');
+        let end_value = '';
+        end_value = myValues(end,end_value);
+    
+        let date_actuel = new Date().getTime();
+        let date_de_debut = Date.parse(date_value + ' ' + begin_value);
+        let date_de_fin = Date.parse(date_value + ' ' + end_value);
+    
+        if( textarea_value === ''
+        || date_value === '' 
+        || begin_value === '' 
+        || end_value === '')
+        {
+            e.preventDefault();
+            notifier('Veuillez d\'abord remplir tous les champs');
+        }
+        else if(date_de_debut < date_actuel)
+        {
+            notifier('Aucune date antérieure à celle d\'aujourd\'hui n\'est acceptée');
+        }
+        else if(date_de_debut >= date_actuel && date_de_fin <=  date_de_debut)
+        {
+            notifier('L\'heure de début doit être supérieur à l\'heure de fin');
+        }
+        else
+        {   
+            text_to_edit.innerText = textarea_value;
+            date_to_edit.innerText = date_value;
+            beginH_to_edit.innerText = begin_value;
+            endH_to_edit.innerText = end_value;
+            notifier('Tâche éditée avec succès');
+            popUp.setAttribute('class','pop_up');
+        }
+    })
+    
+}
 function delete_myTask(id)
 {
     const my_task_toDelete = document.getElementById(`delete_task${id}`);
@@ -325,7 +387,7 @@ function move(id,side)
         moving();
     }
 }
-function myTask(tachePara='',datePara='',heure_debutPara='',heure_finPara='')
+function myTask(tachePara = '',datePara = '',heure_debutPara = '',heure_finPara = '')
 {
     const myTask = document.createElement('div');
     myTask.classList.add('myTask');
@@ -564,6 +626,54 @@ fetch(my_Back_Link + 'restauration')
         mes_etats.append(etat);
     }
     const mes_dates_clique = document.querySelectorAll('.mes_dates');
+    let last_state =  mes_dates_clique[mes_dates_clique.length - 1].innerText;
+    let last_state_update = json[last_state].length - 1;
+    json[last_state][last_state_update].forEach(colonnes => 
+        {
+            creationColonne();
+            moving();
+            const myTitle = document.querySelectorAll('.myInputs');
+            for(let i = 0; i < myTitle.length; i++)
+            {
+                myTitle[i].addEventListener('dblclick',() => 
+                {                
+                    let input = document.createElement('input');
+                    input.setAttribute('class','myInpute');
+                    input.value = myTitle[i].innerText;
+                    myTitle[i].replaceWith(input);
+                    blocRebuild();
+                    inputRebuild();
+                })
+            }
+            myTitle[myTitle.length-1].innerText = colonnes['Colonne'];
+            if(colonnes['Taches'].length === 0)
+            {
+                return;
+            }
+            else
+            {
+                colonnes['Taches'].forEach(tache => 
+                    {
+                        const task = document.querySelectorAll('.task');
+                        task[task.length - 1].prepend(myTask(tache["Texte "],tache["Date "],tache["Heure de d\u00e9but "],tache["Heure de fin "]));
+                        moving();   
+                        clean();
+                        popUp.setAttribute('class','pop_up');
+                        const my_tache = document.querySelectorAll('.icone_content');
+                        for(let i = 0; i < my_tache.length; i++)
+                        {
+                            my_tache[i].addEventListener('mouseover',() => 
+                            {
+                                my_tache[i].nextSibling.setAttribute('class','myDescription_affiche');
+                            })
+                            my_tache[i].addEventListener('mouseout',() => 
+                            {
+                                my_tache[i].nextSibling.setAttribute('class','myDescription');
+                            })
+                        }
+                    })
+            }
+        })
     mes_dates_clique.forEach(element => 
     {
         element.addEventListener('click', () => 
@@ -576,7 +686,6 @@ fetch(my_Back_Link + 'restauration')
             json[element.innerText][length].forEach(colonnes => 
                 {
                     creationColonne();
-                    const da_input = document.querySelectorAll('.myInputs');
                     notifier('État restaurée avec succès');
                     moving();
                     const myTitle = document.querySelectorAll('.myInputs');
@@ -589,10 +698,10 @@ fetch(my_Back_Link + 'restauration')
                             input.value = myTitle[i].innerText;
                             myTitle[i].replaceWith(input);
                             blocRebuild();
-                            inputRebuild() 
+                            inputRebuild();
                         })
                     }
-                    da_input[da_input.length-1].innerText = colonnes['Colonne'];
+                    myTitle[myTitle.length-1].innerText = colonnes['Colonne'];
                     if(colonnes['Taches'].length === 0)
                     {
                         return;
@@ -628,66 +737,66 @@ fetch(my_Back_Link + 'restauration')
 const autoSave = document.querySelector('.auto_save');
 autoSave.addEventListener('click',() => 
 {
-    notifier('Mode autosave activé'); 
-    setInterval(() => 
-    {
-        let saved_columns = [];
-
-        const my_saved_blocs= document.querySelectorAll('.bloc');
-        
-        my_saved_blocs.forEach((colonne_actuelle) => 
+        notifier('Mode autosave activé'); 
+        setInterval(() => 
         {
-            if(colonne_actuelle.firstChild.value == undefined)
-            {
-                let myColumn = colonne_actuelle.firstChild.innerText;
-                let conteneurTache = [];
-                let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
-                mesTaches.forEach(tacheActuelle => 
-                    {
-                        conteneurTache.push(
-                            {
-                                'Texte ' : tacheActuelle.querySelector('.text').innerText,
-                                'Date ' : tacheActuelle.querySelector('.date').innerText,
-                                'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
-                                'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
-                            }
-                        )
+            let saved_columns = [];
     
-                    })
-                saved_columns.push(     
-                           {
-                    'Colonne' : myColumn,
-                    'Taches' : conteneurTache
-                })
-            }
-            else
+            const my_saved_blocs= document.querySelectorAll('.bloc');
+            
+            my_saved_blocs.forEach((colonne_actuelle) => 
             {
-                let myColumn = colonne_actuelle.firstChild.value;
-                let conteneurTache = [];
-                let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
-                mesTaches.forEach(tacheActuelle => 
-                    {
-                        conteneurTache.push(
-                            {
-                                'Texte ' : tacheActuelle.querySelector('.text').innerText,
-                                'Date ' : tacheActuelle.querySelector('.date').innerText,
-                                'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
-                                'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
-                            }
-                        )
-    
+                if(colonne_actuelle.firstChild.value == undefined)
+                {
+                    let myColumn = colonne_actuelle.firstChild.innerText;
+                    let conteneurTache = [];
+                    let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+                    mesTaches.forEach(tacheActuelle => 
+                        {
+                            conteneurTache.push(
+                                {
+                                    'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                                    'Date ' : tacheActuelle.querySelector('.date').innerText,
+                                    'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                                    'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                                }
+                            )
+        
+                        })
+                    saved_columns.push(     
+                               {
+                        'Colonne' : myColumn,
+                        'Taches' : conteneurTache
                     })
-                saved_columns.push(     
-                           {
-                    'Colonne' : myColumn,
-                    'Taches' : conteneurTache
-                })
-            }
-        })
-        fetch(my_Back_Link + 'ajouter',
-            {
-                method : "POST",
-                body : JSON.stringify(saved_columns)
+                }
+                else
+                {
+                    let myColumn = colonne_actuelle.firstChild.value;
+                    let conteneurTache = [];
+                    let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+                    mesTaches.forEach(tacheActuelle => 
+                        {
+                            conteneurTache.push(
+                                {
+                                    'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                                    'Date ' : tacheActuelle.querySelector('.date').innerText,
+                                    'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                                    'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                                }
+                            )
+        
+                        })
+                    saved_columns.push(     
+                               {
+                        'Colonne' : myColumn,
+                        'Taches' : conteneurTache
+                    })
+                }
             })
-    }, 5000);
+            fetch(my_Back_Link + 'ajouter',
+                {
+                    method : "POST",
+                    body : JSON.stringify(saved_columns)
+                })
+        }, 60000);
 })

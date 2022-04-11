@@ -28,26 +28,26 @@ body::after
     z-index: -1;
 }
 /******************************************* CREATION CONTENT ************************************************/
-.demarrage_bouton,.demarrage_bouton_close
+.demarrage_bouton
 {
     position: absolute;
-    opacity: 1;
-    top: 35%;
     border-radius:50%;
-    transition: all 0.5s;   
+    transition: all 0.5s;  
+    bottom: -4%;
+    right: -2%;
+    cursor: pointer;
+    z-index: 2; 
+    background-color: white;
 }
 .demarrage_bouton img
 {
     cursor: pointer;
+    max-width: 100px;
+    max-height: 100px;
 }
 .demarrage_bouton:hover
 {
     box-shadow: 0 0 20px 3px white;
-}
-.demarrage_bouton_close
-{
-    opacity: 0;
-    transition: all 2s;   
 }
 /********************************************* PREMIER DIV  ************************************************/
 .first_container_deroule,.first_container
@@ -614,7 +614,7 @@ input:checked ~ .states
     background-color: black;
     color: white;
 }
-
+/* AUTO SAVE */
 .auto_save
 {
     position:absolute;
@@ -624,4 +624,3 @@ input:checked ~ .states
     cursor: pointer;
     z-index: 2;
 }
-
