@@ -614,7 +614,7 @@ input:checked ~ .states
     background-color: black;
     color: white;
 }
-/* AUTO SAVE */
+/*********************************************************AUTO SAVE************************************************/
 .auto_save
 {
     position:absolute;
@@ -623,4 +623,8 @@ input:checked ~ .states
     left: 1%;
     cursor: pointer;
     z-index: 2;
+}
+#save
+{
+    display: none;
 }

@@ -735,15 +735,15 @@ fetch(my_Back_Link + 'restauration')
 })
 
 const autoSave = document.querySelector('.auto_save');
+const saveCheck = document.querySelector('#save');
 autoSave.addEventListener('click',() => 
 {
-        notifier('Mode autosave activé'); 
-        setInterval(() => 
+    if(saveCheck.checked)
+    {
+        let time = setInterval(() => 
         {
             let saved_columns = [];
-    
             const my_saved_blocs= document.querySelectorAll('.bloc');
-            
             my_saved_blocs.forEach((colonne_actuelle) => 
             {
                 if(colonne_actuelle.firstChild.value == undefined)
@@ -761,42 +761,46 @@ autoSave.addEventListener('click',() =>
                                     'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
                                 }
                             )
-        
                         })
                     saved_columns.push(     
-                               {
-                        'Colonne' : myColumn,
-                        'Taches' : conteneurTache
-                    })
-                }
-                else
-                {
-                    let myColumn = colonne_actuelle.firstChild.value;
-                    let conteneurTache = [];
-                    let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
-                    mesTaches.forEach(tacheActuelle => 
                         {
-                            conteneurTache.push(
-                                {
-                                    'Texte ' : tacheActuelle.querySelector('.text').innerText,
-                                    'Date ' : tacheActuelle.querySelector('.date').innerText,
-                                    'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
-                                    'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
-                                }
-                            )
-        
+                            'Colonne' : myColumn,
+                            'Taches' : conteneurTache
                         })
-                    saved_columns.push(     
-                               {
-                        'Colonne' : myColumn,
-                        'Taches' : conteneurTache
+            }
+            else
+            {
+                let myColumn = colonne_actuelle.firstChild.value;
+                let conteneurTache = [];
+                let mesTaches = colonne_actuelle.querySelectorAll('.myTask');
+                mesTaches.forEach(tacheActuelle => 
+                    {
+                        conteneurTache.push(
+                            {
+                                'Texte ' : tacheActuelle.querySelector('.text').innerText,
+                                'Date ' : tacheActuelle.querySelector('.date').innerText,
+                                'Heure de début ' : tacheActuelle.querySelector('.debut_heure').innerText,
+                                'Heure de fin ' : tacheActuelle.querySelector('.fin_heure').innerText
+                            })
                     })
-                }
+                saved_columns.push(     
+                        {
+                            'Colonne' : myColumn,
+                            'Taches' : conteneurTache
+                        })
+            }
+        })
+        fetch(my_Back_Link + 'ajouter',
+            {
+                method : "POST",
+                body : JSON.stringify(saved_columns)
             })
-            fetch(my_Back_Link + 'ajouter',
-                {
-                    method : "POST",
-                    body : JSON.stringify(saved_columns)
-                })
-        }, 60000);
+        }, 10000);
+        notifier('Mode autosave activé'); 
+    }
+    else
+    {
+        notifier('Mode autosave desactivé'); 
+        clearInterval(time);
+    }
 })
