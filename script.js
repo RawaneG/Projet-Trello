@@ -119,7 +119,7 @@ createurColonne.addEventListener('click', (e) =>
         notifier('Colonne créee avec succès');
         moving();
         blocRebuild();
-        inputRebuild() 
+        inputRebuild();
         const myTitle = document.querySelectorAll('.myInputs');
         for(let i = 0; i < myTitle.length; i++)
         {
@@ -130,7 +130,7 @@ createurColonne.addEventListener('click', (e) =>
                 input.value = myTitle[i].innerText;
                 myTitle[i].replaceWith(input);
                 blocRebuild();
-                inputRebuild() 
+                inputRebuild();
             })
         }
     }   
@@ -809,3 +809,4 @@ autoSave.addEventListener('click',() =>
         clearInterval(time);
     }
 })
+
