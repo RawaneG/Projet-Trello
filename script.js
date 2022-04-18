@@ -157,6 +157,8 @@ createurNote.addEventListener('click', (e) =>
     }
     else
     {
+        ajouter.setAttribute('class','ajout');
+        modif.setAttribute('class','modif');
         popUp.setAttribute('class','pop_up_affiche');
         fermer.addEventListener('click',() => 
         {
@@ -165,6 +167,7 @@ createurNote.addEventListener('click', (e) =>
     }
 })
 const ajouter = popUp.querySelector('.ajout');
+const modif = popUp.querySelector('.modif');
 function clean()
 {
     const clean_inputs = popUp.querySelectorAll('input');
@@ -181,31 +184,22 @@ function clean()
 ajouter.addEventListener('click',(e) => 
 {
 const task = document.querySelector('.task');
-    //  Récupération de la valeur du textarea
     const textarea = document.querySelectorAll('textarea');
     let textarea_value = '';
     textarea_value = myValues(textarea,textarea_value);
-    //  Récupération de la valeur de la date
     const date = document.querySelectorAll('input[type=date]');
     let date_value = '';
     date_value = myValues(date,date_value);
-    //  Récupération de la valeur de l'heure de début
     const begin = document.querySelectorAll('.begintime');
     let begin_value = '';
     begin_value = myValues(begin,begin_value);
-    //  Récupération de la valeur de l'heure de fin
     const end = document.querySelectorAll('.endtime');
     let end_value = '';
     end_value = myValues(end,end_value);
-
     let date_actuel = new Date().getTime();
     let date_de_debut = Date.parse(date_value + ' ' + begin_value);
     let date_de_fin = Date.parse(date_value + ' ' + end_value);
-
-    if( textarea_value === ''
-    || date_value === '' 
-    || begin_value === '' 
-    || end_value === '')
+    if( textarea_value === '' || date_value === '' || begin_value === '' || end_value === '')
     {
         e.preventDefault();
         notifier('Veuillez d\'abord remplir tous les champs');
@@ -245,65 +239,76 @@ function grandparent(element)
 }
 function edit_myTask(id)
 {
+    ajouter.setAttribute('class','ajout_enleve');
+    modif.setAttribute('class','modif_affiche');
     const my_task_toEdit = document.getElementById(`edit_task${id}`);
-    const text_to_edit = my_task_toEdit.querySelector('.text');
-    const date_to_edit = my_task_toEdit.querySelector('.date');
-    const beginH_to_edit = my_task_toEdit.querySelector('.debut_heure');
-    const endH_to_edit = my_task_toEdit.querySelector('.debut_fin');
+    const tache_actuelle = grandparent(my_task_toEdit);
+    const text_to_edit = tache_actuelle.querySelector('.text');
+    const date_to_edit = tache_actuelle.querySelector('.date');
+    const beginH_to_edit = tache_actuelle.querySelector('.debut_heure');
+    const endH_to_edit = tache_actuelle.querySelector('.fin_heure');
+
     my_task_toEdit.addEventListener('click',() => 
     {
         popUp.setAttribute('class','pop_up_affiche');
+
+        const textarea = document.querySelector('textarea');
+        const date = document.querySelector('input[type=date]');
+        const begin = document.querySelector('.begintime');
+        const end = document.querySelector('.endtime');
+
+        textarea.value = text_to_edit.innerText;
+        date.value = date_to_edit.innerText;
+        begin.value = beginH_to_edit.innerText;
+        end.value = endH_to_edit.innerText;
+        
         fermer.addEventListener('click',() => 
         {
             popUp.setAttribute('class','pop_up');
         })
-        const textarea = document.querySelectorAll('textarea');
-        let textarea_value = '';
-        textarea_value = myValues(textarea,textarea_value);
-        //  Récupération de la valeur de la date
-        const date = document.querySelectorAll('input[type=date]');
-        let date_value = '';
-        date_value = myValues(date,date_value);
-        //  Récupération de la valeur de l'heure de début
-        const begin = document.querySelectorAll('.begintime');
-        let begin_value = '';
-        begin_value = myValues(begin,begin_value);
-        //  Récupération de la valeur de l'heure de fin
-        const end = document.querySelectorAll('.endtime');
-        let end_value = '';
-        end_value = myValues(end,end_value);
-    
-        let date_actuel = new Date().getTime();
-        let date_de_debut = Date.parse(date_value + ' ' + begin_value);
-        let date_de_fin = Date.parse(date_value + ' ' + end_value);
-    
-        if( textarea_value === ''
-        || date_value === '' 
-        || begin_value === '' 
-        || end_value === '')
+        modif.addEventListener('click',(e) =>
         {
-            e.preventDefault();
-            notifier('Veuillez d\'abord remplir tous les champs');
-        }
-        else if(date_de_debut < date_actuel)
-        {
-            notifier('Aucune date antérieure à celle d\'aujourd\'hui n\'est acceptée');
-        }
-        else if(date_de_debut >= date_actuel && date_de_fin <=  date_de_debut)
-        {
-            notifier('L\'heure de début doit être supérieur à l\'heure de fin');
-        }
-        else
-        {   
-            text_to_edit.innerText = textarea_value;
-            date_to_edit.innerText = date_value;
-            beginH_to_edit.innerText = begin_value;
-            endH_to_edit.innerText = end_value;
-            notifier('Tâche éditée avec succès');
-            popUp.setAttribute('class','pop_up');
-        }
-    })
-    
+            const textarea = document.querySelectorAll('textarea');
+            let textarea_value = '';
+            textarea_value = myValues(textarea,textarea_value);
+            const date = document.querySelectorAll('input[type=date]');
+            let date_value = '';
+            date_value = myValues(date,date_value);
+            const begin = document.querySelectorAll('.begintime');
+            let begin_value = '';
+            begin_value = myValues(begin,begin_value);
+            const end = document.querySelectorAll('.endtime');
+            let end_value = '';
+            end_value = myValues(end,end_value);
+            let date_actuel = new Date().getTime();
+            let date_de_debut = Date.parse(date_value + ' ' + begin_value);
+            let date_de_fin = Date.parse(date_value + ' ' + end_value);
+            if( textarea_value === '' || date_value === '' || begin_value === '' || end_value === '')
+            {
+                e.preventDefault();
+                notifier('Veuillez d\'abord remplir tous les champs');
+            }
+            else if(date_de_debut < date_actuel)
+            {
+                notifier('Aucune date antérieure à celle d\'aujourd\'hui n\'est acceptée');
+            }
+            else if(date_de_debut >= date_actuel && date_de_fin <=  date_de_debut)
+            {
+                notifier('L\'heure de début doit être supérieur à l\'heure de fin');
+            }
+            else
+            {   
+                text_to_edit.innerText = textarea_value;
+                date_to_edit.innerText = date_value;
+                beginH_to_edit.innerText = begin_value;
+                endH_to_edit.innerText = end_value;
+                notifier('tâche modifiée avec succès');
+                moving();   
+                clean();
+                popUp.setAttribute('class','pop_up');
+            }
+        })
+    }) 
 }
 function delete_myTask(id)
 {
@@ -508,42 +513,42 @@ function notifier(message)
 }
 
 let time = setInterval(() => 
-{
-    const mes_taches = document.querySelectorAll('.myTask');
-    mes_taches.forEach((e) => 
     {
-        const date = e.querySelector('.date').innerText;
-        const mon_heure_debut = e.querySelector('.debut_heure').innerText;
-        const mon_heure_fin = e.querySelector('.fin_heure').innerText;
-
-        let date_actuel = new Date().getTime();
-        let date_de_debut = Date.parse(date + ' ' + mon_heure_debut);
-        let date_de_fin = Date.parse(date + ' ' + mon_heure_fin);
-
-        let intervalle1 = date_de_debut - date_actuel;
-        let intervalle2 = date_de_fin - date_actuel;
-
-        if(intervalle1 <= 0)
+        const mes_taches = document.querySelectorAll('.myTask');
+        mes_taches.forEach((e) => 
         {
-            e.classList.add('pulse');
-            e.style.border = '4px solid green';
-        }
-        if(intervalle2 <= 0)
-        {
-            let my_icones = e.querySelectorAll('.kakashi');
-            my_icones.forEach((e) => 
+            const date = e.querySelector('.date').innerText;
+            const mon_heure_debut = e.querySelector('.debut_heure').innerText;
+            const mon_heure_fin = e.querySelector('.fin_heure').innerText;
+    
+            let date_actuel = new Date().getTime();
+            let date_de_debut = Date.parse(date + ' ' + mon_heure_debut);
+            let date_de_fin = Date.parse(date + ' ' + mon_heure_fin);
+    
+            let intervalle1 = date_de_debut - date_actuel;
+            let intervalle2 = date_de_fin - date_actuel;
+    
+            if(intervalle1 <= 0)
             {
-                e.classList.add('tobi');
-            })
-            let gauche = e.querySelector('.gauche');
-            let droite = e.querySelector('.droite');
-            gauche.style.visibility = 'hidden';
-            droite.style.visibility = 'hidden';
-            e.classList.remove('pulse');
-            e.style.border = '4px solid gray';
-        }
-
-    });
+                e.classList.add('pulse');
+                e.style.border = '4px solid green';
+            }
+            if(intervalle2 <= 0)
+            {
+                let my_icones = e.querySelectorAll('.kakashi');
+                my_icones.forEach((e) => 
+                {
+                    e.classList.add('tobi');
+                })
+                let gauche = e.querySelector('.gauche');
+                let droite = e.querySelector('.droite');
+                gauche.style.visibility = 'hidden';
+                droite.style.visibility = 'hidden';
+                e.classList.remove('pulse');
+                e.style.border = '4px solid gray';
+            }
+    
+        });
 },1000);
 
 const save_state = document.querySelector('.save');

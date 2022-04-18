@@ -448,7 +448,7 @@ label
     cursor: pointer;
 }
 /****************************************** BOUTON DU POP UP *****************************************/
-.ajout
+.ajout,.modif_affiche
 {
     margin: 4% 0;
     text-align: center;
@@ -456,7 +456,7 @@ label
     background-color: #038f0a;
     transition: all 0.3s ease-in-out;
 }
-.ajout button
+.ajout button,.modif_affiche button
 {
     border: none;
     background: none;
@@ -466,9 +466,13 @@ label
     cursor: pointer;
     color: white;
 }
-.ajout:hover
+.ajout:hover,.modif_affiche:hover
 {
     background-color: #02aa0a;
+}
+.ajout_enleve,.modif
+{
+    display: none;
 }
 /****************************************** MENU CORBEILLE ***********************************************/
 .trash_menu,.trash_menu_open
